@@ -1,4 +1,6 @@
 const {SlashCommandBuilder} = require("discord.js");
+const Player = require('../model/playermodel');
+
 
 const sqlite3 = require('sqlite3').verbose();
 //adicionando conexão com o sql
@@ -7,12 +9,14 @@ let db = new sqlite3.Database('mydb.sqlite', (err) => {
       console.error(err.message);
     }
     console.log('Conectando na db em addplayer.js...');
-  });
+});
+
+const playersql = new Player('mydb.sqlite');
 
 //createTable if dont exists
 createTable(db);
 
-//db.run(`INSERT INTO users (id, name) VALUES (?, ?)`, [1, 'John Doe']);
+
 
 const list = [{ name: 'Healer', value: 'Healer' },  { name: 'Bruiser', value: 'Bruiser' },  { name: 'Assassin ranged', value: 'Assassin ranged' },  { name: 'Assassin flex', value: 'Assassin flex' },  { name: 'Flex', value: 'Flex' },  { name: 'Tank', value: 'Tank' }];
 
@@ -48,8 +52,12 @@ module.exports = {
         const role1 = interaction.options.getString('role1');
         const role2 = interaction.options.getString('role2');
 
+        const rows = await playersql.getPlayerByUsertag(userTag);
+        console.log(rows);
+
+        console.log("********************");
         let row;
-        let sql = `SELECT * FROM users WHERE usertag = ?`;
+        let sql = `SELECT * FROM player WHERE usertag = ?`;
         await new Promise((resolve, reject) => {
             db.all(sql, [userTag], (err, result) => {
                 if (err) {
@@ -169,14 +177,15 @@ function getEmbed(type){
 
 function createTable(db){
     db.run(`
-    CREATE TABLE IF NOT EXISTS users (
+    CREATE TABLE IF NOT EXISTS player (
         usertag text PRIMARY KEY NOT NULL,
-        name NOT NULL,
+        name text NOT NULL,
         mmr int NOT NULL,
         role1 text NOT NULL,
         role2 text,
         addby text,
-        win text,
-        lose text
+        win int,
+        lose int,
+        games int
     )`);
 }

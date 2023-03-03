@@ -12,7 +12,7 @@ class Player {
 
   async getPlayerByUsertag(usertag) {
     const rows = await this.query('SELECT * FROM player WHERE usertag = ?', [usertag]);
-    return rows[0];
+    return rows;
   }
 
   async createPlayer(usertag, name, role1, role2, addby) {
@@ -68,3 +68,5 @@ class Player {
     this.db.close();
   }
 }
+
+module.exports = Player;
