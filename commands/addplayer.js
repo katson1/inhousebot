@@ -30,8 +30,6 @@ module.exports = {
                 .addChoices(...list)),
 
     async execute(interaction){
-        type = 1;
-        
         //ADICIONAR CHECAGEM SE JOGADOR TEM CARGO PARA ADICIONAR OUTRO PLAYER
         //console.log(interaction.member.roles.cache.some(role => role.name === 'inhouse'));
 
@@ -41,9 +39,7 @@ module.exports = {
         const userTag = player+'#'+tag;
         const role1 = interaction.options.getString('role1');
         const role2 = interaction.options.getString('role2');
-
         const result = await playersql.getPlayerByUsertag(userTag);
-        console.log(result);
                 
         if (result.length > 0) {
             exampleEmbed = getEmbed(2);
@@ -64,7 +60,6 @@ module.exports = {
 
         } else {
             await playersql.createPlayer(userTag, player, role1, role2, user);
-            console.log(`O jogador ${userTag} não existe.`);
 
             exampleEmbed = getEmbed(1);
             exampleEmbed.author.name = `${user} adicionou um novo jogador:`;
@@ -138,7 +133,6 @@ function createTable(){
         if (err) {
           console.error(err.message);
         }
-        console.log('Conectando na db em addplayer.js...');
     });
 
     db.run(`
