@@ -13,8 +13,6 @@ module.exports = {
                 .setRequired(true)),
 
     async execute(interaction){
-        type = 1;
-        
         const player = interaction.options.getUser('player').username;
         const tag = interaction.options.getUser('player').discriminator;
         const userTag = player+'#'+tag;

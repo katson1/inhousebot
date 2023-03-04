@@ -10,12 +10,12 @@ class Lobby {
     return rows;
   }
 
-  async createLobby(usertag, name, role1, role2, addby) {
+  async createLobby() {
     const result = await this.run('INSERT INTO lobby (players, team1, team2, winner, state) VALUES (?,?,?,?,?)', ['[]', '[]', '[]', 0, 1]);
     return result.lastID;
   }
 
-  async getLobbyOpenned(usertag) {
+  async getLobbyOpenned() {
     const rows = await this.query('SELECT rowid, * FROM lobby where state not in (2,3) order by rowid desc');
     return rows;
   }
@@ -87,3 +87,5 @@ class Lobby {
     this.db.close();
   }
 }
+
+module.exports = Lobby;
