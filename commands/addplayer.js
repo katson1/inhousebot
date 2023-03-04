@@ -52,87 +52,66 @@ module.exports = {
         const role1 = interaction.options.getString('role1');
         const role2 = interaction.options.getString('role2');
 
-        const rows = await playersql.getPlayerByUsertag(userTag);
-        console.log(rows);
-
-        console.log("********************");
-        let row;
-        let sql = `SELECT * FROM player WHERE usertag = ?`;
-        await new Promise((resolve, reject) => {
-            db.all(sql, [userTag], (err, result) => {
-                if (err) {
-                    reject(err);
-                }
-                row = result;
-                console.log(result);
-                resolve();
+        const result = await playersql.getPlayerByUsertag(userTag);
+        console.log(result);
                 
-                if (result.length > 0) {
-                    exampleEmbed = getEmbed(2);
-                    exampleEmbed.title = 'Atenção';
-                    exampleEmbed.fields.push(   
-                    {
-                        name: `O jogador ${userTag} já está adicionado na inhouse!`,
-                        value: `MMR atual: ${result[0].mmr} - Foi adicionado por: ${result[0].addby}`,
-                        inline: false,
-                    },
-                    {
-                        name: '\u200b',
-                        value: '\u200b',
-                        inline: false,
-                    });
-                    interaction.reply({ embeds: [exampleEmbed]});    
-
-
-                } else {
-                    console.log(`O jogador ${userTag} não existe.`);
-                    let sql = `INSERT INTO users (usertag, name, mmr, role1, role2, addby, win, lose) VALUES (?,?,?,?,?,?,?,?)`;
-                    let values = [userTag, player, 100, role1, role2, user, 0, 0];
-                    db.run(sql, values, function(err) {
-                        if (err) {
-                            return console.log(err.message);
-                        }
-                        console.log(`A row has been inserted with rowid ${this.lastID}`);
-                    });
-
-                    exampleEmbed = getEmbed(1);
-                    exampleEmbed.author.name = `${user} adicionou um novo jogador:`;
-                    if(role1 == role2){
-                        exampleEmbed.title = userTag;
-                        exampleEmbed.fields.push({
-                            name: `A role de ${player} é apenas:`,
-                            value: role1,
-                            inline: true,
-                        },
-                        {
-                            name: '\u200b',
-                            value: '\u200b',
-                            inline: false,
-                        });
-                        interaction.reply({ embeds: [exampleEmbed]});
-                    } else {
-                        exampleEmbed.title = userTag;
-                        exampleEmbed.fields.push(
-                        {
-                            name: `As roles do ${player} são:`,
-                            value: role1,
-                            inline: true,
-                        },
-                        {
-                            name: '\u200b',
-                            value: role2,
-                            inline: true,
-                        },
-                        {
-                            name: '\u200b',
-                            value: '\u200b',
-                            inline: false,
-                        });
-                        interaction.reply({ embeds: [exampleEmbed]});
-                    }
-                }
+        if (result.length > 0) {
+            exampleEmbed = getEmbed(2);
+            exampleEmbed.title = 'Atenção';
+            exampleEmbed.fields.push(   
+            {
+                name: `O jogador ${userTag} já está adicionado na inhouse!`,
+                value: `MMR atual: ${result[0].mmr} - Foi adicionado por: ${result[0].addby}`,
+                inline: false,
+            },
+            {
+                name: '\u200b',
+                value: '\u200b',
+                inline: false,
             });
-        });
+            await interaction.reply({ embeds: [exampleEmbed]});    
+
+
+        } else {
+            await playersql.createPlayer(userTag, player, role1, role2, user);
+            console.log(`O jogador ${userTag} não existe.`);
+
+            exampleEmbed = getEmbed(1);
+            exampleEmbed.author.name = `${user} adicionou um novo jogador:`;
+            if(role1 == role2){
+                exampleEmbed.title = userTag;
+                exampleEmbed.fields.push({
+                    name: `A role de ${player} é apenas:`,
+                    value: role1,
+                    inline: true,
+                },
+                {
+                    name: '\u200b',
+                    value: '\u200b',
+                    inline: false,
+                });
+                await interaction.reply({ embeds: [exampleEmbed]});
+            } else {
+                exampleEmbed.title = userTag;
+                exampleEmbed.fields.push(
+                {
+                    name: `As roles do ${player} são:`,
+                    value: role1,
+                    inline: true,
+                },
+                {
+                    name: '\u200b',
+                    value: role2,
+                    inline: true,
+                },
+                {
+                    name: '\u200b',
+                    value: '\u200b',
+                    inline: false,
+                });
+                await interaction.reply({ embeds: [exampleEmbed]});
+            }
+        }
     }
 }
 

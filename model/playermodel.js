@@ -16,7 +16,7 @@ class Player {
   }
 
   async createPlayer(usertag, name, role1, role2, addby) {
-    const result = await this.run('INSERT INTO player (usertag, name, mmr, role1, role2, wins, loses, games) VALUES (?,?,100,?,?,?,0,0,0)', [usertag, name, role1, role2, addby]);
+    const result = await this.run('INSERT INTO player (usertag, name, mmr, role1, role2, addby, win, lose, games) VALUES (?,?,100,?,?,?,0,0,0)', [usertag, name, role1, role2, addby]);
     return result.lastID;
   }
 
