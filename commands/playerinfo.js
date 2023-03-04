@@ -1,22 +1,15 @@
 const {SlashCommandBuilder} = require("discord.js");
+const Player = require('../model/playermodel');
 
-const sqlite3 = require('sqlite3').verbose();
-//adicionando conexão com o sql
-let db = new sqlite3.Database('mydb.sqlite', (err) => {
-    if (err) {
-      console.error(err.message);
-    }
-    console.log('Conectando na db em playerinfo.js...');
-});
-
+const playersql = new Player('mydb.sqlite');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("playerinfo")
-        .setDescription("Procure informações de um jogador!")
+        .setDescription("Mostra informações de um jogador!")
         .addUserOption(option =>
             option.setName('player')
-                .setDescription('Nome do jogador')
+                .setDescription('Usertag do jogador')
                 .setRequired(true)),
 
     async execute(interaction){
@@ -26,61 +19,55 @@ module.exports = {
         const tag = interaction.options.getUser('player').discriminator;
         const userTag = player+'#'+tag;
 
-        let row;
-        let sql = `SELECT rowid, * FROM users WHERE usertag = ?`;
-        await new Promise((resolve, reject) => {
-            db.all(sql, [userTag], (err, result) => {
-                if (err) {
-                    reject(err);
-                }
-                row = result;
-                console.log(result);
-                resolve();
+        result = await playersql.getPlayerByUsertag(userTag);
                 
-                if (result.length > 0) {
-                    exampleEmbed = getEmbed();
-                    exampleEmbed.title = `${userTag}:`;
-                    exampleEmbed.fields.push(   
-                    {
-                        name: ``,
-                        value: `MMR atual: ${result[0].mmr}`,
-                        inline: false,
-                    },
-                    {
-                        name: '\u200b',
-                        value: `Wins: ${result[0].win}` ,
-                        inline: false,
-                    },
-                    {
-                        name: '\u200b',
-                        value: `Loses: ${result[0].lose}` ,
-                        inline: false,
-                    },
-                    {
-                        name: '\u200b',
-                        value: `Foi adicionado por: ${result[0].addby}`,
-                        inline: false,
-                    });
-                    interaction.reply({ embeds: [exampleEmbed]});    
-
-                } else {
-                    exampleEmbed = getEmbed();
-                    exampleEmbed.fields.push(   
-                    {
-                        name: `${userTag} não está inscrito na inhouse:`,
-                        value: ``,
-                        inline: false,
-                    },
-                    {
-                        name: '\u200b',
-                        value: `Você pode usar /addplayer para adicionar o jogador.`,
-                        inline: false,
-                    });
-                    interaction.reply({ embeds: [exampleEmbed]});
-                    
-                }
+        if (result.length > 0) {
+            exampleEmbed = getEmbed();
+            exampleEmbed.title = `${userTag}:`;
+            exampleEmbed.fields.push(   
+            {
+                name: ``,
+                value: `MMR atual: ${result[0].mmr}`,
+                inline: false,
+            },
+            {
+                name: '\u200b',
+                value: `Wins: ${result[0].win}` ,
+                inline: false,
+            },
+            {
+                name: '\u200b',
+                value: `Loses: ${result[0].lose}` ,
+                inline: false,
+            },
+            {
+                name: '\u200b',
+                value: `Games: ${result[0].games}` ,
+                inline: false,
+            },
+            {
+                name: '\u200b',
+                value: `Add by: ${result[0].addby}`,
+                inline: false,
             });
-        });
+            interaction.reply({ embeds: [exampleEmbed]});    
+
+        } else {
+            exampleEmbed = getEmbed();
+            exampleEmbed.fields.push(   
+            {
+                name: `${userTag} não está inscrito na inhouse:`,
+                value: ``,
+                inline: false,
+            },
+            {
+                name: '\u200b',
+                value: `Você pode usar /addplayer para adicionar o jogador.`,
+                inline: false,
+            });
+            interaction.reply({ embeds: [exampleEmbed]});
+            
+        }
     }
 }
 
@@ -92,9 +79,8 @@ function getEmbed(){
         description: '',
         fields: [
         ],
-        timestamp: new Date().toISOString(),
         footer: {
-            text: 'Developed by KemmelAnos',
+            text: 'Developed by Katson',
             icon_url: 'https://i.imgur.com/AfFp7pu.png',
         },
     };

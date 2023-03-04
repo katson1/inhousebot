@@ -1,7 +1,5 @@
 const {SlashCommandBuilder} = require("discord.js");
 const Player = require('../model/playermodel');
-const sqlite3 = require('sqlite3').verbose();
-
 
 const playersql = new Player('mydb.sqlite');
 
