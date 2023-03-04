@@ -67,7 +67,7 @@ function getEmbed(){
         ],
         timestamp: new Date().toISOString(),
         footer: {
-            text: 'Developed by KemmelAnos',
+            text: 'Developed by Katson',
             icon_url: 'https://i.imgur.com/AfFp7pu.png',
         },
     };

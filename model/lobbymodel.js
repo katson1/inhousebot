@@ -20,11 +20,16 @@ class Lobby {
     return rows;
   }
 
+  async getLobbyOpenned() {
+    const rows = await this.query('SELECT rowid, * FROM lobby where state not in (2,3) order by rowid desc');
+    return rows;
+  }
+
   async getLobbyInProgress(rowid) {
     const rows = await this.query('SELECT * FROM lobby WHERE rowid = ? AND state = 2', [rowid]);
     return rows;
   }
-
+  
   async updateTeam1(usertag) {
     await this.run('UPDATE player SET loses = loses + 1 WHERE usertag = ?', [usertag]);
   }
@@ -35,10 +40,6 @@ class Lobby {
 
   async uptateWinner(state, rowid) {
     await this.run('UPDATE player SET state = ? WHERE rowid = ?', [state, rowid]);
-  }
-
-  async uptateWinner(winner, rowid) {
-    await this.run('UPDATE player SET winner = ? WHERE rowid = ?', [winner, rowid]);
   }
 
   async updatePlayers(values, newplayer) {

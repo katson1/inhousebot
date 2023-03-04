@@ -1,6 +1,10 @@
 const {SlashCommandBuilder} = require("discord.js");
-
+const Lobby = require('../model/lobbymodel');
+const Player = require('../model/playermodel');
 const sqlite3 = require('sqlite3').verbose();
+
+const lobbysql = new Lobby('mydb.sqlite');
+const playersql = new Player('mydb.sqlite');
 
 //adding connection with sqlite
 let db = new sqlite3.Database('mydb.sqlite', (err) => {
@@ -24,93 +28,96 @@ module.exports = {
         //ADICIONAR CHECAGEM SE JOGADOR ESTÁ INCRITO NA INHOUSE
         //console.log(interaction.member.roles.cache.some(role => role.name === 'inhouse'));
 
-        let row;
-        let sql = `SELECT rowid, * FROM lobby where state not in (2,3) order by rowid desc`;
+
         //we get the lobby with the state 1 (openned)
-        await new Promise((resolve, reject) => {
-            db.all(sql, [], (err, result) => {
-                if (err) {
-                    reject(err);
-                }
-                row = result;
-                resolve();
-                
-                //if has a lobby created with the command /lobby
-                if (result.length > 0) {
-                    
-                    updatePlayers(result, userTag);
+        const result = await lobbysql.getLobbyOpenned();
+        //if has a lobby created with the command /lobby
+        if (result.length > 0) {
+            
+            let players = result[0].players;
+            let listplayers = JSON.parse(players);
+            exampleEmbed = getEmbed();
+            
+            isplayerincluded = await playersql.getPlayerByUsertag(userTag);
+            if(isplayerincluded.length == 0){
+                exampleEmbed.title = `Você não está adicionado na inhouse!`;
 
-                    let players = result[0].players;
-                    let listplayers = JSON.parse(players);
+                //adding to embed: the player that use the command
+                exampleEmbed.fields.push(   
+                {
+                    name: 'Use /addplayer para se adicionar, ou peça para alguém com o cargo inhouse lhe adicionar',
+                    value: '\u200b',
+                    inline: false,
+                });
+                await interaction.reply({ embeds: [exampleEmbed]});    
+            } else {
+                //checking if the player is already in a openned lobby
+                if (listplayers.includes(userTag)) {
+                    exampleEmbed.title = `Você já está em um lobby aberto Nº(${result[0].rowid})!`;
+                    await interaction.reply({ embeds: [exampleEmbed]});    
 
-                    exampleEmbed = getEmbed();
+                } else {
 
                     // if the players in the lobby has 9 players that means the player using /join is the 10th
                     // them we will change the lobby state to in_progress
                     if(listplayers.length == 9){
                         const stringWithoutBrackets = result[0].players.substring(1, result[0].players.length - 1);
-                        let teste;
-                        let sqlusers = `SELECT rowid, * FROM users WHERE usertag in (${stringWithoutBrackets},"${userTag}")`;
-                        db.all(sqlusers, [], (err, rows) => {
+                        rows = await playersql.getPlayersListWithIn(stringWithoutBrackets, userTag);
+                    
+                        console.log(rows);
+                        let originalList = rows;
+                        let minDiff = Infinity;
+                        let bestPartition;
 
-                            if (err) {
-                              throw err;
+
+                        for (const partition of getPartitions(originalList)) {
+                        const sumA = partition.reduce((acc, obj) => acc + obj.mmr, 0);
+                        const sumB = originalList.reduce((acc, obj) => acc + obj.mmr, 0) - sumA;
+                        const diff = Math.abs(sumA - sumB);
+                        if (diff < minDiff) {
+                            minDiff = diff;
+                            bestPartition = [partition, originalList.filter((obj) => !partition.includes(obj))];
                             }
-                            let originalList = rows;
-                            let minDiff = Infinity;
-                            let bestPartition;
+                        }
 
-
-                            for (const partition of getPartitions(originalList)) {
-                            const sumA = partition.reduce((acc, obj) => acc + obj.mmr, 0);
-                            const sumB = originalList.reduce((acc, obj) => acc + obj.mmr, 0) - sumA;
-                            const diff = Math.abs(sumA - sumB);
-                            if (diff < minDiff) {
-                                minDiff = diff;
-                                bestPartition = [partition, originalList.filter((obj) => !partition.includes(obj))];
-                                }
-                            }
-
-                            exampleEmbed.title = `Lobby: (${result[0].rowid})`;
+                        exampleEmbed.title = `Lobby: (${result[0].rowid})`;
+                        exampleEmbed.fields.push(
+                            {
+                                name: `Time 1:`,
+                                value: '\u200b',
+                                inline: true,
+                            },
+                            {
+                                name: '\u200b',
+                                value: '\u200b',
+                                inline: true,
+                            },
+                            {
+                                name: 'Time2:',
+                                value: '\u200b',
+                                inline: true,
+                            });
+                        for (const x of Array(5).keys()) {
                             exampleEmbed.fields.push(
-                                {
-                                    name: `Time 1:`,
-                                    value: '\u200b',
-                                    inline: true,
-                                },
-                                {
-                                    name: '\u200b',
-                                    value: '\u200b',
-                                    inline: true,
-                                },
-                                {
-                                    name: 'Time2:',
-                                    value: '\u200b',
-                                    inline: true,
-                                });
-                            for (const x of Array(5).keys()) {
-                                exampleEmbed.fields.push(
-                                {
-                                    name: bestPartition[0][x].name + ' (' + bestPartition[0][x].mmr+')',
-                                    value: '\u200b',
-                                    inline: true,
-                                },
-                                {
-                                    name: '\u200b',
-                                    value: '\u200b',
-                                    inline: true,
-                                },
-                                {
-                                    name: bestPartition[1][x].name + ' (' + bestPartition[1][x].mmr+')',
-                                    value: '\u200b',
-                                    inline: true,
-                                });
-                            }
-                            updateTeams(bestPartition[0], bestPartition[1], result[0].rowid);
-                            updateState(result);
-                            interaction.reply({ embeds: [exampleEmbed]});    
-
-                        });
+                            {
+                                name: bestPartition[0][x].name + ' (' + bestPartition[0][x].mmr+')',
+                                value: '\u200b',
+                                inline: true,
+                            },
+                            {
+                                name: '\u200b',
+                                value: '\u200b',
+                                inline: true,
+                            },
+                            {
+                                name: bestPartition[1][x].name + ' (' + bestPartition[1][x].mmr+')',
+                                value: '\u200b',
+                                inline: true,
+                            });
+                        }
+                        updateTeams(bestPartition[0], bestPartition[1], result[0].rowid);
+                        updateState(result);
+                        await interaction.reply({ embeds: [exampleEmbed]});    
                         
 
                     } else {
@@ -139,27 +146,29 @@ module.exports = {
                             value: '\u200b',
                             inline: false,
                         });
-                        interaction.reply({ embeds: [exampleEmbed]});    
+                        await interaction.reply({ embeds: [exampleEmbed]});    
                         
-                    } 
+                    }
+                } 
+            }
 
-                } else {
-                    exampleEmbed = getEmbed();
-                    exampleEmbed.title = `Algum jogador precisa criar um lobby antes de entrar:`;
-                    exampleEmbed.fields.push({
-                        name: `Digite /lobby para criar no lobby.`,
-                        value: '',
-                        inline: true,
-                    },
-                    {
-                        name: '\u200b',
-                        value: '\u200b',
-                        inline: false,
-                    });
-                    interaction.reply({ embeds: [exampleEmbed]});
-                }
+
+
+        } else {
+            exampleEmbed = getEmbed();
+            exampleEmbed.title = `Algum jogador precisa criar um lobby antes de entrar:`;
+            exampleEmbed.fields.push({
+                name: `Digite /lobby para criar no lobby.`,
+                value: '',
+                inline: true,
+            },
+            {
+                name: '\u200b',
+                value: '\u200b',
+                inline: false,
             });
-        });
+            await interaction.reply({ embeds: [exampleEmbed]});
+        }
     }
 }
 
@@ -180,20 +189,6 @@ function getEmbed(){
     };
 
     return embed;
-}
-
-// state will controll if a lobby 
-// openned(1), in_progress(2) or closed(3)
-function createTable(db){
-    console.log('criando lobby');
-    db.run(`
-    CREATE TABLE IF NOT EXISTS lobby (
-        players NOT NULL,
-        team1 NOT NULL,
-        team2 text NOT NULL,
-        winner text,
-        state int
-    )`);
 }
 
 function updatePlayers(values, newplayer) {
