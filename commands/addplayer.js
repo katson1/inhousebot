@@ -1,22 +1,12 @@
 const {SlashCommandBuilder} = require("discord.js");
 const Player = require('../model/playermodel');
-
-
 const sqlite3 = require('sqlite3').verbose();
-//adicionando conexão com o sql
-let db = new sqlite3.Database('mydb.sqlite', (err) => {
-    if (err) {
-      console.error(err.message);
-    }
-    console.log('Conectando na db em addplayer.js...');
-});
+
 
 const playersql = new Player('mydb.sqlite');
 
 //createTable if dont exists
-createTable(db);
-
-
+createTable();
 
 const list = [{ name: 'Healer', value: 'Healer' },  { name: 'Bruiser', value: 'Bruiser' },  { name: 'Assassin ranged', value: 'Assassin ranged' },  { name: 'Assassin flex', value: 'Assassin flex' },  { name: 'Flex', value: 'Flex' },  { name: 'Tank', value: 'Tank' }];
 
@@ -118,43 +108,39 @@ module.exports = {
 function getEmbed(type){
     //embed to reply interaction
     //type == 1 -> player inserted
-    //type == 2 -> player already in the table
-    if(type == 1){
-        embed = {
-            color: 0x000000,
-            title: '',
-            author: {
-                name: ``,
-                icon_url: 'https://i.imgur.com/AfFp7pu.png',
-            },
-            description: 'Seja bem-vindo à nossa inhouse.',
-            fields: [
-            ],
-            timestamp: new Date().toISOString(),
-            footer: {
-                text: 'Developed by KemmelAnos',
-                icon_url: 'https://i.imgur.com/AfFp7pu.png',
-            },
-        };
-    } else {
-        embed = {
-            color: 0x000000,
-            title: '',
-            description: '',
-            fields: [
-            ],
-            timestamp: new Date().toISOString(),
-            footer: {
-                text: 'Developed by KemmelAnos',
-                icon_url: 'https://i.imgur.com/AfFp7pu.png',
-            },
-        };
-    }
+    //else      -> player already in the table
+    embed = {
+        color: 0x000000,
+        title: '',
+        description: '',
+        fields: [
+        ],
+        footer: {
+            text: 'Developed by Katson',
+            icon_url: 'https://i.imgur.com/AfFp7pu.png',
+        },
+    };
 
+    if(type == 1){
+        embed.author = {
+            name: ``,
+            icon_url: 'https://i.imgur.com/AfFp7pu.png',
+        };
+        embed.description = 'Seja bem-vindo à nossa inhouse.';
+
+    }
     return embed;
 }
 
-function createTable(db){
+function createTable(){
+
+    let db = new sqlite3.Database('mydb.sqlite', (err) => {
+        if (err) {
+          console.error(err.message);
+        }
+        console.log('Conectando na db em addplayer.js...');
+    });
+
     db.run(`
     CREATE TABLE IF NOT EXISTS player (
         usertag text PRIMARY KEY NOT NULL,
