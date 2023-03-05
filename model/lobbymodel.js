@@ -33,8 +33,8 @@ class Lobby {
     await this.run('UPDATE player SET games = games + 1 WHERE usertag = ?', [usertag]);
   }
 
-  async uptateWinner(state, rowid) {
-    await this.run('UPDATE player SET state = ? WHERE rowid = ?', [state, rowid]);
+  async uptateWinner(winner, rowid) {
+    await this.run('UPDATE player SET winner = ? WHERE rowid = ?', [winner, rowid]);
   }
 
   async updatePlayers(values, newplayer) {
@@ -55,9 +55,16 @@ class Lobby {
     await this.run(`UPDATE lobby SET team1 = '${transformedTeam1}', team2 = '${transformedTeam2}' where rowid = ?`, [lobbyid]);
   }
   
-  async updateState(values) {
+  async updateStateToInProgress(values) {
     let rowid = values[0].rowid;
     let state = 2; // in_progress
+    
+    await this.run(`UPDATE lobby SET state = ? where rowid = ?`, [state, rowid]);
+  }
+  
+  async updateStateToClosed(values) {
+    let rowid = values[0].rowid;
+    let state = 3; // in_progress
     
     await this.run(`UPDATE lobby SET state = ? where rowid = ?`, [state, rowid]);
   }

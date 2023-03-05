@@ -33,50 +33,40 @@ module.exports = {
 
     async execute(interaction){
         
+        var replyEmbed = getEmbed();
+
         //ADICIONAR CHECAGEM SE JOGADOR TEM CARGO PARA ADICIONAR OUTRO PLAYER
         //console.log(interaction.member.roles.cache.some(role => role.name === 'inhouse'));
 
         const lobbynumber = interaction.options.getString('lobbynumber');
         const winnerteam = interaction.options.getString('winnerteam');
+        const user = interaction.user.username;
         
-        
+        result = await lobbysql.getLobbyInProgress(lobbynumber);
 
-        let row;
-        let sql = `SELECT * FROM lobby WHERE rowid = ? AND state = 2`;
-        await new Promise((resolve, reject) => {
-            db.all(sql, [lobbynumber], (err, result) => {
-                if (err) {
-                    reject(err);
-                }
-                row = result;
-                resolve();
-                
-                if (result.length > 0) {
-                    exampleEmbed = getEmbed();
-                    exampleEmbed.title = 'Info:';
-                    exampleEmbed.fields.push(   
-                    {
-                        name: `O lobby (${lobbynumber}) foi fechado!`,
-                        value: ``,
-                        inline: false,
-                    },
-                    {
-                        name: '\u200b',
-                        value: '\u200b',
-                        inline: false,
-                    });
-                    interaction.reply({ embeds: [exampleEmbed]});    
-                    updateState(lobbynumber);
-                    updateMMRs(lobbynumber, winnerteam);
-
-                } else {
-                    exampleEmbed = getEmbed();
-                    exampleEmbed.title = `O lobby ${lobbynumber} não existe ou já foi fechado!`;
-                    interaction.reply({ embeds: [exampleEmbed]});
-
-                }
+        if (result.length > 0) {
+            replyEmbed.title = 'Info:';
+            replyEmbed.fields.push(   
+            {
+                name: `O lobby (${lobbynumber}) foi fechado!`,
+                value: ``,
+                inline: false,
+            },
+            {
+                name: '\u200b',
+                value: `Fechado por: ${user} - Time vencedor: ${winnerteam}`,
+                inline: false,
             });
-        });
+            interaction.reply({ embeds: [replyEmbed]});
+            lobbysql.updateStateToClosed(lobbynumber);
+            lobbysql.uptateWinner(winnerteam, lobbynumber);
+            updateMMRs(lobbynumber, winnerteam);
+
+        } else {
+            replyEmbed.title = `O lobby ${lobbynumber} não existe ou já foi fechado!`;
+            interaction.reply({ embeds: [replyEmbed]});
+
+        }
     }
 }
 
@@ -96,19 +86,6 @@ function getEmbed(){
     };
 
     return embed;
-}
-
-function updateState(lobbynumber){
-    let rowid = lobbynumber;
-    let state = 3; // in_progress
-    
-    let sql = `UPDATE lobby SET state = ? where rowid = ?`;
-    db.run(sql, [state, rowid], function(err) {
-        if (err) {
-            return console.log(err.message);
-        }
-        console.log(`The lobby has been updated.`);
-    });
 }
 
 function updateMMRs(lobbynumber, winnerteam){

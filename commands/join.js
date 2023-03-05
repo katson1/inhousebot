@@ -109,7 +109,7 @@ module.exports = {
                         }
 
                         lobbysql.updateTeams(bestPartition[0], bestPartition[1], result[0].rowid);
-                        lobbysql.updateState(result);
+                        lobbysql.updateStateToInProgress(result);
                         await interaction.reply({ embeds: [replyEmbed] });
 
 
