@@ -20,11 +20,6 @@ class Lobby {
     return rows;
   }
 
-  async getLobbyOpenned() {
-    const rows = await this.query('SELECT rowid, * FROM lobby where state not in (2,3) order by rowid desc');
-    return rows;
-  }
-
   async getLobbyInProgress(rowid) {
     const rows = await this.query('SELECT * FROM lobby WHERE rowid = ? AND state = 2', [rowid]);
     return rows;
