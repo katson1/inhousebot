@@ -1,6 +1,12 @@
 const {SlashCommandBuilder} = require("discord.js");
+const Lobby = require('../model/lobbymodel');
+const Player = require('../model/playermodel');
 
 const sqlite3 = require('sqlite3').verbose();
+
+const lobbysql = new Lobby('mydb.sqlite');
+const playersql = new Player('mydb.sqlite');
+
 //adicionando conexão com o sql
 let db = new sqlite3.Database('mydb.sqlite', (err) => {
     if (err) {
@@ -33,6 +39,8 @@ module.exports = {
         const lobbynumber = interaction.options.getString('lobbynumber');
         const winnerteam = interaction.options.getString('winnerteam');
         
+        
+
         let row;
         let sql = `SELECT * FROM lobby WHERE rowid = ? AND state = 2`;
         await new Promise((resolve, reject) => {
@@ -82,7 +90,7 @@ function getEmbed(){
         ],
         timestamp: new Date().toISOString(),
         footer: {
-            text: 'Developed by KemmelAnos',
+            text: 'Developed by Katson',
             icon_url: 'https://i.imgur.com/AfFp7pu.png',
         },
     };
@@ -129,8 +137,8 @@ function updateMMRs(lobbynumber, winnerteam){
         let team2List = JSON.parse(team2);
 
         if(winnerteam == 2){
-            team1ListforEach(element => {
-                let sql = `UPDATE users SET lose = lose + 1, mmr = mmr - 10 WHERE usertag = ?`;
+            team1List.forEach(element => {
+                let sql = `UPDATE users SET lose = lose + 1, mmr = mmr - 5 WHERE usertag = ?`;
                 db.run(sql, [element], function(err) {
                     if (err) {
                         return console.log(err.message);
@@ -138,7 +146,7 @@ function updateMMRs(lobbynumber, winnerteam){
                 });
             });
             team2List.forEach(element => {
-                let sql = `UPDATE users SET win = win + 1, mmr = mmr + 10 WHERE usertag = ?`;
+                let sql = `UPDATE users SET win = win + 1, mmr = mmr + 5 WHERE usertag = ?`;
                 db.run(sql, [element], function(err) {
                     if (err) {
                         return console.log(err.message);
@@ -148,7 +156,7 @@ function updateMMRs(lobbynumber, winnerteam){
         }
         if(winnerteam == 1){
             team2List.forEach(element => {
-                let sql = `UPDATE users SET lose = lose + 1, mmr = mmr - 10 WHERE usertag = ?`;
+                let sql = `UPDATE users SET lose = lose + 1, mmr = mmr - 5 WHERE usertag = ?`;
                 db.run(sql, [element], function(err) {
                     if (err) {
                         return console.log(err.message);
@@ -156,7 +164,7 @@ function updateMMRs(lobbynumber, winnerteam){
                 });
             });
             team1List.forEach(element => {
-                let sql = `UPDATE users SET win = win + 1, mmr = mmr + 10 WHERE usertag = ?`;
+                let sql = `UPDATE users SET win = win + 1, mmr = mmr + 5 WHERE usertag = ?`;
                 db.run(sql, [element], function(err) {
                     if (err) {
                         return console.log(err.message);

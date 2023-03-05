@@ -40,21 +40,10 @@ module.exports = {
                     
                     removePlayer(result, userTag);
 
-                    let players = result[0].players;
-                    let listplayers = JSON.parse(players);
-
                     exampleEmbed = getEmbed();
-
                     exampleEmbed.title = `${userTag} saiu do lobby (${result[0].rowid}).`;
-
-
                     //adding to embed: the player that use the command
                     exampleEmbed.fields.push(   
-                    {
-                        name: ``,
-                        value: userTag,
-                        inline: false,
-                    },
                     {
                         name: '\u200b',
                         value: '\u200b',
@@ -93,7 +82,7 @@ function getEmbed(){
         ],
         timestamp: new Date().toISOString(),
         footer: {
-            text: 'Developed by KemmelAnos',
+            text: 'Developed by Katson',
             icon_url: 'https://i.imgur.com/AfFp7pu.png',
         },
     };

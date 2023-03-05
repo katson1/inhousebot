@@ -21,7 +21,7 @@ class Player {
   }
   
   async createPlayer(usertag, name, role1, role2, addby) {
-    const result = await this.run('INSERT INTO player (usertag, name, mmr, role1, role2, addby, win, lose, games) VALUES (?,?,100,?,?,?,0,0,0)', [usertag, name, role1, role2, addby]);
+    const result = await this.run('INSERT INTO player (usertag, name, mmr, role1, role2, addby, win, lose, games) VALUES (?,?,50,?,?,?,0,0,0)', [usertag, name, role1, role2, addby]);
     return result.lastID;
   }
 
@@ -38,11 +38,11 @@ class Player {
   }
   
   async updatePlayerMmrWin(usertag) {
-    await this.run('UPDATE player SET mmr = mmr + 10 WHERE usertag = ?', [usertag]);
+    await this.run('UPDATE player SET mmr = mmr + 5 WHERE usertag = ?', [usertag]);
   }
   
   async updatePlayerMmrLose(usertag) {
-    await this.run('UPDATE player SET mmr = mmr - 10 WHERE usertag = ?', [usertag]);
+    await this.run('UPDATE player SET mmr = mmr - 5 WHERE usertag = ?', [usertag]);
   }
 
   query(sql, params) {

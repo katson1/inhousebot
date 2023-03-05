@@ -24,7 +24,7 @@ module.exports = {
                 .addChoices(...list))
         .addStringOption(option =>
             option.setName('role2')
-                .setDescription('Adicione a reole secundária')
+                .setDescription('Adicione a role secundária')
                 .setRequired(true)
                 .addChoices(...list)),
 

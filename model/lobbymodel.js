@@ -53,11 +53,18 @@ class Lobby {
     await this.run('UPDATE lobby SET players = ? where rowid = ?', [newPlayers, rowid]);
   }
 
- async updateTeams(team1, team2, lobbyid) {
+  async updateTeams(team1, team2, lobbyid) {
     let transformedTeam1 = JSON.stringify(team1.map(team => team.usertag));
     let transformedTeam2 = JSON.stringify(team2.map(team => team.usertag));
     
     await this.run(`UPDATE lobby SET team1 = '${transformedTeam1}', team2 = '${transformedTeam2}' where rowid = ?`, [lobbyid]);
+  }
+  
+  async updateState(values) {
+    let rowid = values[0].rowid;
+    let state = 2; // in_progress
+    
+    await this.run(`UPDATE lobby SET state = ? where rowid = ?`, [state, rowid]);
   }
 
   query(sql, params) {
