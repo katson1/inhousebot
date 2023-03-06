@@ -12,20 +12,25 @@ class Player {
 
   async getPlayerByUsertag(usertag) {
     const rows = await this.query('SELECT * FROM player WHERE usertag = ?', [usertag]);
-    return rows[0];
+    return rows;
   }
 
+  async getPlayersListWithIn(stringWithoutBrackets, usertag) {
+    const rows = await this.query(`SELECT rowid, * FROM player WHERE usertag in (${stringWithoutBrackets},"${usertag}")`,[]);
+    return rows;
+  }
+  
   async createPlayer(usertag, name, role1, role2, addby) {
-    const result = await this.run('INSERT INTO player (usertag, name, mmr, role1, role2, wins, loses, games) VALUES (?,?,100,?,?,?,0,0,0)', [usertag, name, role1, role2, addby]);
+    const result = await this.run('INSERT INTO player (usertag, name, mmr, role1, role2, addby, win, lose, games) VALUES (?,?,50,?,?,?,0,0,0)', [usertag, name, role1, role2, addby]);
     return result.lastID;
   }
 
   async updatePlayerWins(usertag) {
-    await this.run('UPDATE player SET wins = wins + 1 WHERE usertag = ?', [usertag]);
+    await this.run('UPDATE player SET win = win + 1 WHERE usertag = ?', [usertag]);
   }
 
   async updatePlayerLoses(usertag) {
-    await this.run('UPDATE player SET loses = loses + 1 WHERE usertag = ?', [usertag]);
+    await this.run('UPDATE player SET lose = lose + 1 WHERE usertag = ?', [usertag]);
   }
 
   async updatePlayerGames(usertag) {
@@ -33,11 +38,11 @@ class Player {
   }
   
   async updatePlayerMmrWin(usertag) {
-    await this.run('UPDATE player SET mmr = mmr + 10 WHERE usertag = ?', [usertag]);
+    await this.run('UPDATE player SET mmr = mmr + 5 WHERE usertag = ?', [usertag]);
   }
   
   async updatePlayerMmrLose(usertag) {
-    await this.run('UPDATE player SET mmr = mmr - 10 WHERE usertag = ?', [usertag]);
+    await this.run('UPDATE player SET mmr = mmr - 5 WHERE usertag = ?', [usertag]);
   }
 
   query(sql, params) {
@@ -68,3 +73,5 @@ class Player {
     this.db.close();
   }
 }
+
+module.exports = Player;

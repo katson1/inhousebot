@@ -1,15 +1,9 @@
 const {SlashCommandBuilder} = require("discord.js");
+const Lobby = require('../model/lobbymodel');
+const Player = require('../model/playermodel');
 
-const sqlite3 = require('sqlite3').verbose();
-//adicionando conexão com o sql
-let db = new sqlite3.Database('mydb.sqlite', (err) => {
-    if (err) {
-      console.error(err.message);
-    }
-    console.log('Conectando na db em lobbyresult.js...');
-  });
-
-//db.run(`INSERT INTO users (id, name) VALUES (?, ?)`, [1, 'John Doe']);
+const lobbysql = new Lobby('mydb.sqlite');
+const playersql = new Player('mydb.sqlite');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -27,48 +21,40 @@ module.exports = {
 
     async execute(interaction){
         
+        var replyEmbed = getEmbed();
+
         //ADICIONAR CHECAGEM SE JOGADOR TEM CARGO PARA ADICIONAR OUTRO PLAYER
         //console.log(interaction.member.roles.cache.some(role => role.name === 'inhouse'));
 
         const lobbynumber = interaction.options.getString('lobbynumber');
         const winnerteam = interaction.options.getString('winnerteam');
+        const user = interaction.user.username;
         
-        let row;
-        let sql = `SELECT * FROM lobby WHERE rowid = ? AND state = 2`;
-        await new Promise((resolve, reject) => {
-            db.all(sql, [lobbynumber], (err, result) => {
-                if (err) {
-                    reject(err);
-                }
-                row = result;
-                resolve();
-                
-                if (result.length > 0) {
-                    exampleEmbed = getEmbed();
-                    exampleEmbed.title = 'Info:';
-                    exampleEmbed.fields.push(   
-                    {
-                        name: `O lobby (${lobbynumber}) foi fechado!`,
-                        value: ``,
-                        inline: false,
-                    },
-                    {
-                        name: '\u200b',
-                        value: '\u200b',
-                        inline: false,
-                    });
-                    interaction.reply({ embeds: [exampleEmbed]});    
-                    updateState(lobbynumber);
-                    updateMMRs(lobbynumber, winnerteam);
+        result = await lobbysql.getLobbyInProgress(lobbynumber);
 
-                } else {
-                    exampleEmbed = getEmbed();
-                    exampleEmbed.title = `O lobby ${lobbynumber} não existe ou já foi fechado!`;
-                    interaction.reply({ embeds: [exampleEmbed]});
-
-                }
+        if (result.length > 0) {
+            replyEmbed.title = 'Info:';
+            replyEmbed.fields.push(   
+            {
+                name: `O lobby (${lobbynumber}) foi fechado!`,
+                value: ``,
+                inline: false,
+            },
+            {
+                name: '\u200b',
+                value: `Fechado por: ${user} - Time vencedor: ${winnerteam}`,
+                inline: false,
             });
-        });
+            interaction.reply({ embeds: [replyEmbed]});
+            lobbysql.updateStateToClosed(lobbynumber);
+            lobbysql.uptateWinner(winnerteam, lobbynumber);
+            updateMMRs(lobbynumber, winnerteam);
+
+        } else {
+            replyEmbed.title = `O lobby ${lobbynumber} não existe ou já foi fechado!`;
+            interaction.reply({ embeds: [replyEmbed]});
+
+        }
     }
 }
 
@@ -82,7 +68,7 @@ function getEmbed(){
         ],
         timestamp: new Date().toISOString(),
         footer: {
-            text: 'Developed by KemmelAnos',
+            text: 'Developed by Katson',
             icon_url: 'https://i.imgur.com/AfFp7pu.png',
         },
     };
@@ -90,80 +76,37 @@ function getEmbed(){
     return embed;
 }
 
-function updateState(lobbynumber){
+async function updateMMRs(lobbynumber, winnerteam){
     let rowid = lobbynumber;
-    let state = 3; // in_progress
     
-    let sql = `UPDATE lobby SET state = ? where rowid = ?`;
-    db.run(sql, [state, rowid], function(err) {
-        if (err) {
-            return console.log(err.message);
-        }
-        console.log(`The lobby has been updated.`);
-    });
-}
+    //lobbysql.updateStateToClosed(rowid);
 
-function updateMMRs(lobbynumber, winnerteam){
-    let rowid = lobbynumber;
-    let state = 3; // in_progress
-    
-    let sql = `UPDATE lobby SET state = ? where rowid = ?`;
-    db.run(sql, [state, rowid], function(err) {
-        if (err) {
-            return console.log(err.message);
-        }
-        console.log(`The lobby has been updated.`);
-    });
+    result = await lobbysql.getLobbyByRowid(rowid);
 
-    let sql2 = `SELECT * FROM lobby WHERE rowid = ?`;
-    db.all(sql2, [lobbynumber], (err, result) => {
-        if (err) {
-            reject(err);
-        }
-        row = result;
+    let team1 = result[0].team1;
+    let team1List = JSON.parse(team1);
+    let team2 = result[0].team2;
+    let team2List = JSON.parse(team2);
 
-        console.log(result);
-        let team1 = result[0].team1;
-        let team1List = JSON.parse(team1);
-        let team2 = result[0].team2;
-        let team2List = JSON.parse(team2);
-
-        if(winnerteam == 2){
-            team1ListforEach(element => {
-                let sql = `UPDATE users SET lose = lose + 1, mmr = mmr - 10 WHERE usertag = ?`;
-                db.run(sql, [element], function(err) {
-                    if (err) {
-                        return console.log(err.message);
-                    }
-                });
-            });
-            team2List.forEach(element => {
-                let sql = `UPDATE users SET win = win + 1, mmr = mmr + 10 WHERE usertag = ?`;
-                db.run(sql, [element], function(err) {
-                    if (err) {
-                        return console.log(err.message);
-                    }
-                });
-            });
-        }
-        if(winnerteam == 1){
-            team2List.forEach(element => {
-                let sql = `UPDATE users SET lose = lose + 1, mmr = mmr - 10 WHERE usertag = ?`;
-                db.run(sql, [element], function(err) {
-                    if (err) {
-                        return console.log(err.message);
-                    }
-                });
-            });
-            team1List.forEach(element => {
-                let sql = `UPDATE users SET win = win + 1, mmr = mmr + 10 WHERE usertag = ?`;
-                db.run(sql, [element], function(err) {
-                    if (err) {
-                        return console.log(err.message);
-                    }
-                });
-            });
-        }
-    });
+    if(winnerteam == 2){
+        team1List.forEach(element => {
+            playersql.updatePlayerLoses(element);
+            playersql.updatePlayerMmrLose(element);
+        });
+        team2List.forEach(element => {
+            playersql.updatePlayerWins(element);
+            playersql.updatePlayerMmrWin(element);
+        });
+    }
+    if(winnerteam == 1){
+        team2List.forEach(element => {
+            playersql.updatePlayerLoses(element);
+            playersql.updatePlayerMmrLose(element);
+        });
+        team1List.forEach(element => {
+            playersql.updatePlayerWins(element);
+            playersql.updatePlayerMmrWin(element);
+        });
+    }
 
 }

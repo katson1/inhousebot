@@ -10,12 +10,18 @@ class Lobby {
     return rows;
   }
 
-  async createLobby(usertag, name, role1, role2, addby) {
+  async createLobby() {
     const result = await this.run('INSERT INTO lobby (players, team1, team2, winner, state) VALUES (?,?,?,?,?)', ['[]', '[]', '[]', 0, 1]);
     return result.lastID;
   }
 
-  async getLobbyOpenned(usertag) {
+  async getLobbyByRowid(rowid){
+    const rows = await this.query(`SELECT rowid, * FROM lobby WHERE rowid = ?`, [rowid]);
+    console.log(rows);
+    return rows;
+  }
+
+  async getLobbyOpenned() {
     const rows = await this.query('SELECT rowid, * FROM lobby where state not in (2,3) order by rowid desc');
     return rows;
   }
@@ -24,21 +30,9 @@ class Lobby {
     const rows = await this.query('SELECT * FROM lobby WHERE rowid = ? AND state = 2', [rowid]);
     return rows;
   }
-
-  async updateTeam1(usertag) {
-    await this.run('UPDATE player SET loses = loses + 1 WHERE usertag = ?', [usertag]);
-  }
-
-  async updateTeam2(usertag) {
-    await this.run('UPDATE player SET games = games + 1 WHERE usertag = ?', [usertag]);
-  }
-
-  async uptateWinner(state, rowid) {
-    await this.run('UPDATE player SET state = ? WHERE rowid = ?', [state, rowid]);
-  }
-
+  
   async uptateWinner(winner, rowid) {
-    await this.run('UPDATE player SET winner = ? WHERE rowid = ?', [winner, rowid]);
+    await this.run('UPDATE lobby SET winner = ? WHERE rowid = ?', [winner, rowid]);
   }
 
   async updatePlayers(values, newplayer) {
@@ -48,16 +42,41 @@ class Lobby {
     parsedPlayers.push(newplayer); // Add a new player to the array
     let newPlayers = JSON.stringify(parsedPlayers); // Encode the modified array back into a JSON string
     
-
     await this.run('UPDATE lobby SET players = ? where rowid = ?', [newPlayers, rowid]);
   }
 
- async updateTeams(team1, team2, lobbyid) {
+  async updateTeams(team1, team2, lobbyid) {
     let transformedTeam1 = JSON.stringify(team1.map(team => team.usertag));
     let transformedTeam2 = JSON.stringify(team2.map(team => team.usertag));
     
     await this.run(`UPDATE lobby SET team1 = '${transformedTeam1}', team2 = '${transformedTeam2}' where rowid = ?`, [lobbyid]);
   }
+  
+  async updateStateToInProgress(values) {
+    let rowid = values[0].rowid;
+    let state = 2; // in_progress
+    
+    await this.run(`UPDATE lobby SET state = ? where rowid = ?`, [state, rowid]);
+  }
+  
+  async updateStateToClosed(rowid) {
+    let state = 3; // in_progress
+    
+    await this.run(`UPDATE lobby SET state = ? where rowid = ?`, [state, rowid]);
+  }
+
+  async removePlayer(values, newplayer) {
+    let rowid = values[0].rowid;
+    let existingPlayers = values[0].players; // Existing players
+    let parsedPlayers = JSON.parse(existingPlayers); // Parse the existing players into a JavaScript array
+    var index = parsedPlayers.indexOf(newplayer);
+    if (index !== -1) {
+        parsedPlayers.splice(index, 1);
+    }
+    let newPlayers = JSON.stringify(parsedPlayers); // Encode the modified array back into a JSON string
+    
+    await this.run(`UPDATE lobby SET players = ? where rowid = ?`, [newPlayers, rowid]);
+}
 
   query(sql, params) {
     return new Promise((resolve, reject) => {
@@ -87,3 +106,5 @@ class Lobby {
     this.db.close();
   }
 }
+
+module.exports = Lobby;
