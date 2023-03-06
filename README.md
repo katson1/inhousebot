@@ -65,7 +65,7 @@ npm install sqlite3
   ```
 First you need to created a bot in the [discord developer portal](https://discord.com/developers/applications).
 
-Copy the **TOKEN**.
+Copy the bot **TOKEN**.
 
 Add the bot to you server.
 
