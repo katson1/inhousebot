@@ -26,11 +26,11 @@ class Player {
   }
 
   async updatePlayerWins(usertag) {
-    await this.run('UPDATE player SET wins = wins + 1 WHERE usertag = ?', [usertag]);
+    await this.run('UPDATE player SET win = win + 1 WHERE usertag = ?', [usertag]);
   }
 
   async updatePlayerLoses(usertag) {
-    await this.run('UPDATE player SET loses = loses + 1 WHERE usertag = ?', [usertag]);
+    await this.run('UPDATE player SET lose = lose + 1 WHERE usertag = ?', [usertag]);
   }
 
   async updatePlayerGames(usertag) {

@@ -15,6 +15,12 @@ class Lobby {
     return result.lastID;
   }
 
+  async getLobbyByRowid(rowid){
+    const rows = await this.query(`SELECT rowid, * FROM lobby WHERE rowid = ?`, [rowid]);
+    console.log(rows);
+    return rows;
+  }
+
   async getLobbyOpenned() {
     const rows = await this.query('SELECT rowid, * FROM lobby where state not in (2,3) order by rowid desc');
     return rows;
@@ -25,16 +31,8 @@ class Lobby {
     return rows;
   }
   
-  async updateTeam1(usertag) {
-    await this.run('UPDATE player SET loses = loses + 1 WHERE usertag = ?', [usertag]);
-  }
-
-  async updateTeam2(usertag) {
-    await this.run('UPDATE player SET games = games + 1 WHERE usertag = ?', [usertag]);
-  }
-
   async uptateWinner(winner, rowid) {
-    await this.run('UPDATE player SET winner = ? WHERE rowid = ?', [winner, rowid]);
+    await this.run('UPDATE lobby SET winner = ? WHERE rowid = ?', [winner, rowid]);
   }
 
   async updatePlayers(values, newplayer) {
@@ -44,7 +42,6 @@ class Lobby {
     parsedPlayers.push(newplayer); // Add a new player to the array
     let newPlayers = JSON.stringify(parsedPlayers); // Encode the modified array back into a JSON string
     
-
     await this.run('UPDATE lobby SET players = ? where rowid = ?', [newPlayers, rowid]);
   }
 
@@ -62,12 +59,24 @@ class Lobby {
     await this.run(`UPDATE lobby SET state = ? where rowid = ?`, [state, rowid]);
   }
   
-  async updateStateToClosed(values) {
-    let rowid = values[0].rowid;
+  async updateStateToClosed(rowid) {
     let state = 3; // in_progress
     
     await this.run(`UPDATE lobby SET state = ? where rowid = ?`, [state, rowid]);
   }
+
+  async removePlayer(values, newplayer) {
+    let rowid = values[0].rowid;
+    let existingPlayers = values[0].players; // Existing players
+    let parsedPlayers = JSON.parse(existingPlayers); // Parse the existing players into a JavaScript array
+    var index = parsedPlayers.indexOf(newplayer);
+    if (index !== -1) {
+        parsedPlayers.splice(index, 1);
+    }
+    let newPlayers = JSON.stringify(parsedPlayers); // Encode the modified array back into a JSON string
+    
+    await this.run(`UPDATE lobby SET players = ? where rowid = ?`, [newPlayers, rowid]);
+}
 
   query(sql, params) {
     return new Promise((resolve, reject) => {

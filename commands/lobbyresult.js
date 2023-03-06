@@ -88,67 +88,40 @@ function getEmbed(){
     return embed;
 }
 
-function updateMMRs(lobbynumber, winnerteam){
+async function updateMMRs(lobbynumber, winnerteam){
     let rowid = lobbynumber;
-    let state = 3; // in_progress
     
-    let sql = `UPDATE lobby SET state = ? where rowid = ?`;
-    db.run(sql, [state, rowid], function(err) {
-        if (err) {
-            return console.log(err.message);
-        }
-        console.log(`The lobby has been updated.`);
-    });
+    //lobbysql.updateStateToClosed(rowid);
 
-    let sql2 = `SELECT * FROM lobby WHERE rowid = ?`;
-    db.all(sql2, [lobbynumber], (err, result) => {
-        if (err) {
-            reject(err);
-        }
-        row = result;
+    result = await lobbysql.getLobbyByRowid(rowid);
+    console.log("***********");
+    console.log(result);
+    row = result;
 
-        console.log(result);
-        let team1 = result[0].team1;
-        let team1List = JSON.parse(team1);
-        let team2 = result[0].team2;
-        let team2List = JSON.parse(team2);
+    let team1 = result[0].team1;
+    let team1List = JSON.parse(team1);
+    let team2 = result[0].team2;
+    let team2List = JSON.parse(team2);
 
-        if(winnerteam == 2){
-            team1List.forEach(element => {
-                let sql = `UPDATE users SET lose = lose + 1, mmr = mmr - 5 WHERE usertag = ?`;
-                db.run(sql, [element], function(err) {
-                    if (err) {
-                        return console.log(err.message);
-                    }
-                });
-            });
-            team2List.forEach(element => {
-                let sql = `UPDATE users SET win = win + 1, mmr = mmr + 5 WHERE usertag = ?`;
-                db.run(sql, [element], function(err) {
-                    if (err) {
-                        return console.log(err.message);
-                    }
-                });
-            });
-        }
-        if(winnerteam == 1){
-            team2List.forEach(element => {
-                let sql = `UPDATE users SET lose = lose + 1, mmr = mmr - 5 WHERE usertag = ?`;
-                db.run(sql, [element], function(err) {
-                    if (err) {
-                        return console.log(err.message);
-                    }
-                });
-            });
-            team1List.forEach(element => {
-                let sql = `UPDATE users SET win = win + 1, mmr = mmr + 5 WHERE usertag = ?`;
-                db.run(sql, [element], function(err) {
-                    if (err) {
-                        return console.log(err.message);
-                    }
-                });
-            });
-        }
-    });
+    if(winnerteam == 2){
+        team1List.forEach(element => {
+            playersql.updatePlayerLoses(element);
+            playersql.updatePlayerMmrLose(element);
+        });
+        team2List.forEach(element => {
+            playersql.updatePlayerWins(element);
+            playersql.updatePlayerMmrWin(element);
+        });
+    }
+    if(winnerteam == 1){
+        team2List.forEach(element => {
+            playersql.updatePlayerLoses(element);
+            playersql.updatePlayerMmrLose(element);
+        });
+        team1List.forEach(element => {
+            playersql.updatePlayerWins(element);
+            playersql.updatePlayerMmrWin(element);
+        });
+    }
 
 }
