@@ -8,10 +8,10 @@ const playersql = new Player('mydb.sqlite');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("lobbyresult")
-        .setDescription("Adiciona um jogador!")
+        .setDescription("Define o resultado do lobby!")
         .addStringOption(option =>
             option.setName('lobbynumber')
-                .setDescription('Adicione a role primária')
+                .setDescription('Adicione o número do lobby')
                 .setRequired(true))
         .addStringOption(option =>
             option.setName('winnerteam')

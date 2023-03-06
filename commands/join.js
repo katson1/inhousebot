@@ -8,7 +8,7 @@ const playersql = new Player('mydb.sqlite');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("join")
-        .setDescription("Entrar em um lobby criado!"),
+        .setDescription("Mostrar informações de um jogador!"),
 
     async execute(interaction) {
 
