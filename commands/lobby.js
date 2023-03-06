@@ -83,7 +83,6 @@ function createTable(){
         if (err) {
           console.error(err.message);
         }
-        console.log('Conectando na db em lobby.js...');
     });
 
     db.run(`

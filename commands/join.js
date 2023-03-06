@@ -15,8 +15,6 @@ module.exports = {
         const user = interaction.user.username;
         const tag = interaction.user.discriminator;
         const userTag = user + '#' + tag;
-        //ADICIONAR CHECAGEM SE JOGADOR ESTÁ INCRITO NA INHOUSE
-        //console.log(interaction.member.roles.cache.some(role => role.name === 'inhouse'));
 
         //we get the lobby with the state 1 (openned)
         const result = await lobbysql.getLobbyOpenned();

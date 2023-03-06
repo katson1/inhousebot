@@ -2,13 +2,8 @@ const {SlashCommandBuilder} = require("discord.js");
 const Lobby = require('../model/lobbymodel');
 const Player = require('../model/playermodel');
 
-
-const sqlite3 = require('sqlite3').verbose();
-
 const lobbysql = new Lobby('mydb.sqlite');
-const playersql = new Player('mydb.sqlite');
 
-  
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("leave")

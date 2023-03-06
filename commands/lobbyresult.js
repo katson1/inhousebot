@@ -2,20 +2,8 @@ const {SlashCommandBuilder} = require("discord.js");
 const Lobby = require('../model/lobbymodel');
 const Player = require('../model/playermodel');
 
-const sqlite3 = require('sqlite3').verbose();
-
 const lobbysql = new Lobby('mydb.sqlite');
 const playersql = new Player('mydb.sqlite');
-
-//adicionando conexão com o sql
-let db = new sqlite3.Database('mydb.sqlite', (err) => {
-    if (err) {
-      console.error(err.message);
-    }
-    console.log('Conectando na db em lobbyresult.js...');
-  });
-
-//db.run(`INSERT INTO users (id, name) VALUES (?, ?)`, [1, 'John Doe']);
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -94,9 +82,6 @@ async function updateMMRs(lobbynumber, winnerteam){
     //lobbysql.updateStateToClosed(rowid);
 
     result = await lobbysql.getLobbyByRowid(rowid);
-    console.log("***********");
-    console.log(result);
-    row = result;
 
     let team1 = result[0].team1;
     let team1List = JSON.parse(team1);
