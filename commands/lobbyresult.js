@@ -66,7 +66,6 @@ function getEmbed(){
         description: '',
         fields: [
         ],
-        timestamp: new Date().toISOString(),
         footer: {
             text: 'Developed by Katson',
             icon_url: 'https://i.imgur.com/AfFp7pu.png',
