@@ -27,7 +27,7 @@ module.exports = {
         },
         {
             name: `/leave`,
-            value: `Sair de um lobby entrado anteriormente, não é possível sair de um lobby em progresso (times já definidos)!`,
+            value: `Sai de um lobby entrado anteriormente, não é possível sair de um lobby em progresso (times já definidos)!`,
             inline: false,
         },
         {
