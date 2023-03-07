@@ -51,6 +51,14 @@ An in-house bot that drafts 2 teams and has an MMR system was made for Heroes of
         - player - Select a player from discord server
 </details>
 
+</details>
+
+<details>
+  <summary> /help </summary>
+  
+  - Shows info of commands.
+</details>
+
 ## How to use:
 You need to heave node.js installed.
 Init a project with:
