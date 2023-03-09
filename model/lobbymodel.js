@@ -30,10 +30,20 @@ class Lobby {
     const rows = await this.query('SELECT * FROM lobby WHERE rowid = ? AND state = 2', [rowid]);
     return rows;
   }
+
+  async getLobbyInProgressOrOpenned(rowid) {
+    const rows = await this.query('SELECT * FROM lobby WHERE rowid = ? AND state in (1,2)', [rowid]);
+    return rows;
+  }
   
   async uptateWinner(winner, rowid) {
     await this.run('UPDATE lobby SET winner = ? WHERE rowid = ?', [winner, rowid]);
   }
+
+  async deleteLobby(rowid) {
+    await this.run('DELETE FROM lobby WHERE rowid = ? AND state in (1,2)', [winner, rowid]);
+  }
+
 
   async updatePlayers(values, newplayer) {
     let rowid = values[0].rowid;
