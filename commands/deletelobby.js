@@ -8,7 +8,7 @@ const playersql = new Player('mydb.sqlite');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("deletelobby")
-        .setDescription("Fechar lobby aberto com em progresso!")
+        .setDescription("Fechar lobby aberto ou em progresso!")
         .addStringOption(option =>
             option.setName('lobbynumber')
                 .setDescription('Adicione o número do lobby')
