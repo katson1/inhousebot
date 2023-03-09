@@ -41,6 +41,11 @@ module.exports = {
             inline: false,
         },
         {
+            name: `/deletelobby`,
+            value: `Deleta um lobby aberto (jogadores entrando) ou em progresso (times definidos).`,
+            inline: false,
+        },
+        {
             name: `/help`,
             value: `Mostra a descrição dos comandos.`,
             inline: false,
