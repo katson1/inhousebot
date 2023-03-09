@@ -54,6 +54,14 @@ An in-house bot that drafts 2 teams and has an MMR system was made for Heroes of
 </details>
 
 <details>
+  <summary> /deletelobby </summary>
+  
+  - Deletes a lobby openned (undefined teams) or in progress (defined teams).
+      * options:
+        - lobbynumber - The number of the lobby we wanna delete.
+</details>
+
+<details>
   <summary> /help </summary>
   
   - Shows info of commands.
