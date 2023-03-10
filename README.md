@@ -70,9 +70,9 @@ An in-house bot that drafts 2 teams and has an MMR system was made for Heroes of
 ## How to use:
 You need to have node.js installed.
 
-Dowload the project.
+Download the project.
 
-Install required packages on the project's package:
+Install required packages into the project:
   ```javascript
 npm install discord.js
 npm install dotenv
@@ -100,7 +100,7 @@ You can get the **CLIENT_ID** with a right click on you user profile on discord 
 The *GUILD_ID* with a right click on you server on discord  and clicking on **COPY ID**. 
 If you are not seeing the **COPY ID** button, activate *development mode* on this steps: **discord configs -> advanced -> development mode**
 
-The *.env* file will be like this:
+The *.env* file will be like this example:
   ```.env
 TOKEN=EXAMPLE01234TOKEN
 CLIENT_ID=01234567890
