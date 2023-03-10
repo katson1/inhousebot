@@ -54,7 +54,7 @@ client.on(Events.InteractionCreate, async interaction => {
 
 client.on('message', message => {
     // Check if the message was sent by your boy
-    if (message.author.id === '210789016675549184') {
+    if (message.author.id === '2107890166755491') {
       // Delete the message after a specified amount of time (in this case, 5 seconds)
       setTimeout(() => {
         message.delete();
