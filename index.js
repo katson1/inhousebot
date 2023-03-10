@@ -50,7 +50,6 @@ client.on(Events.InteractionCreate, async interaction => {
         console.error(error);
         await interaction.reply("Houve um erro ao executar esse comando!");
     }
-    //console.log(interaction);
 });
 
 client.on('message', message => {
