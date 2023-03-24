@@ -32,7 +32,7 @@ module.exports = {
         },
         {
             name: `/lobbyresult`,
-            value: `Fecha um lobby e define seu resultado, cada jogador do time vencedor ganha 5 pontos de MMR, perdedores perder 5 pontos de MMR.`,
+            value: `Fecha um lobby e define seu resultado, cada jogador do time vencedor ganha 5 pontos de MMR, perdedores perdem 5 pontos de MMR.`,
             inline: false,
         },
         {
@@ -72,7 +72,7 @@ function getEmbed(){
         ],
         footer: {
             text: 'Developed by Katson',
-            icon_url: 'https://i.imgur.com/AfFp7pu.png',
+            icon_url: 'https://i.postimg.cc/W47Gr3Zq/DALL-E-2023-03-24-09-55-32.png',
         },
     };
 

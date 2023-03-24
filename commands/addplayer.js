@@ -111,14 +111,14 @@ function getEmbed(type){
         ],
         footer: {
             text: 'Developed by Katson',
-            icon_url: 'https://i.imgur.com/AfFp7pu.png',
+            icon_url: 'https://i.postimg.cc/W47Gr3Zq/DALL-E-2023-03-24-09-55-32.png',
         },
     };
 
     if(type == 1){
         embed.author = {
             name: ``,
-            icon_url: 'https://i.imgur.com/AfFp7pu.png',
+            icon_url: 'https://i.postimg.cc/W47Gr3Zq/DALL-E-2023-03-24-09-55-32.png',
         };
         embed.description = 'Seja bem-vindo à nossa inhouse.';
 
