@@ -40,7 +40,7 @@ An in-house bot that drafts 2 teams and has an MMR system was made for Heroes of
 <details>
   <summary> /leave </summary>
   
-  - Leave from a created lobby that you joinned before. You can't leave a lobby alredy in progress.
+  - Leave from a created lobby joinned before. Notice: you can't leave a lobby alredy in progress.
 </details>
 
 <details>
