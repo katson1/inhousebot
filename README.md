@@ -62,6 +62,16 @@ An in-house bot that drafts 2 teams and has an MMR system was made for Heroes of
 </details>
 
 <details>
+  <summary> /ranking </summary>
+  
+  - Shows ranking of players based on selected option.
+      * options:
+        - option - Select between: Top 10 MMR, Bot 10 MMR, Top 10 Wins or Top 10 Loses
+  
+  
+</details>
+
+<details>
   <summary> /help </summary>
   
   - Shows info of commands.
