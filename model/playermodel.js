@@ -15,6 +15,26 @@ class Player {
     return rows;
   }
 
+  async getPlayerByTopMMR() {
+    const rows = await this.query('SELECT * FROM player order by mmr desc limit 10');
+    return rows;
+  }
+
+  async getPlayerByBotMMR() {
+    const rows = await this.query('SELECT * FROM player order by mmr limit 10');
+    return rows;
+  }
+
+  async getPlayerByTopWins() {
+    const rows = await this.query('SELECT * FROM player order by win limit 10');
+    return rows;
+  }
+
+  async getPlayerByTopLoses() {
+    const rows = await this.query('SELECT * FROM player order by lose limit 10');
+    return rows;
+  }
+
   async getPlayersListWithIn(stringWithoutBrackets, usertag) {
     const rows = await this.query(`SELECT rowid, * FROM player WHERE usertag in (${stringWithoutBrackets},"${usertag}")`,[]);
     return rows;
