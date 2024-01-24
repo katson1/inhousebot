@@ -84,9 +84,7 @@ Download the project.
 
 Install required packages into the project:
   ```javascript
-npm install discord.js
-npm install dotenv
-npm install sqlite3
+npm install
   ```
 First you need to created a bot in the [discord developer portal](https://discord.com/developers/applications).
 
