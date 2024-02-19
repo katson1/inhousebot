@@ -1,7 +1,7 @@
-# InHouseBot
+# 🤖 InHouseBot
 An in-house bot that drafts 2 teams and has an MMR system was made for Heroes of the Storm custom games, but it can be used for any game that you play 5v5.
 
-## Commands:
+## ⌨️ Commands:
 
 <details>
   <summary> /addplayer </summary>
@@ -77,7 +77,7 @@ An in-house bot that drafts 2 teams and has an MMR system was made for Heroes of
   - Shows info of commands.
 </details>
 
-## How to use:
+## 📦 How to use:
 You need to have node.js installed.
 
 Download the project.
@@ -121,4 +121,4 @@ node deploy-commands.js
 node index.js
   ```
   
-Notice: You only have to run *node deploy-commands.js* once, this command will create the commands. The index.js has the job to run the bot.
+🔔 Notice: You only have to run *node deploy-commands.js* once, this command will create the commands. The index.js has the job to run the bot.
