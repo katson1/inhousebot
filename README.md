@@ -105,10 +105,10 @@ GUILD_ID=
 Now add the **CLIENT_ID** (you discord user id) and **GUILD_ID** (you server id) to the **.env** file.
 
 You can get the **CLIENT_ID** with a right click on you user profile on discord and clicking on **COPY ID**. 
-The *GUILD_ID* with a right click on you server on discord  and clicking on **COPY ID**. 
-If you are not seeing the **COPY ID** button, activate *development mode* on this steps: **discord configs -> advanced -> development mode**.
+The *GUILD_ID* with a right click on you server on discord and clicking on **COPY ID**. 
+If you are not seeing the **COPY ID** button, activate *development mode* with this steps: **discord configs -> advanced -> development mode**.
 
-The *.env* file will be like this example:
+The `.env` file will be like this example:
   ```.env
 TOKEN=EXAMPLE01234TOKEN
 CLIENT_ID=01234567890
