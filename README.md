@@ -120,3 +120,5 @@ Now, run the commands:
 npm start
   ```
   
+## Author:
+- [Katson](https://github.com/katson1)
