@@ -1,7 +1,7 @@
-# InHouseBot
+# 🤖 InHouseBot
 An in-house bot that drafts 2 teams and has an MMR system was made for Heroes of the Storm custom games, but it can be used for any game that you play 5v5.
 
-## Commands:
+## ⌨️ Commands:
 
 <details>
   <summary> /addplayer </summary>
@@ -62,21 +62,29 @@ An in-house bot that drafts 2 teams and has an MMR system was made for Heroes of
 </details>
 
 <details>
+  <summary> /ranking </summary>
+  
+  - Shows ranking of players based on selected option.
+      * options:
+        - option - Select between: Top 10 MMR, Bot 10 MMR, Top 10 Wins or Top 10 Loses
+  
+  
+</details>
+
+<details>
   <summary> /help </summary>
   
   - Shows info of commands.
 </details>
 
-## How to use:
+## 📦 How to use:
 You need to have node.js installed.
 
 Download the project.
 
 Install required packages into the project:
-  ```javascript
-npm install discord.js
-npm install dotenv
-npm install sqlite3
+  ```bash
+npm install
   ```
 First you need to created a bot in the [discord developer portal](https://discord.com/developers/applications).
 
@@ -97,10 +105,10 @@ GUILD_ID=
 Now add the **CLIENT_ID** (you discord user id) and **GUILD_ID** (you server id) to the **.env** file.
 
 You can get the **CLIENT_ID** with a right click on you user profile on discord and clicking on **COPY ID**. 
-The *GUILD_ID* with a right click on you server on discord  and clicking on **COPY ID**. 
-If you are not seeing the **COPY ID** button, activate *development mode* on this steps: **discord configs -> advanced -> development mode**.
+The *GUILD_ID* with a right click on you server on discord and clicking on **COPY ID**. 
+If you are not seeing the **COPY ID** button, activate *development mode* with this steps: **discord configs -> advanced -> development mode**.
 
-The *.env* file will be like this example:
+The `.env` file will be like this example:
   ```.env
 TOKEN=EXAMPLE01234TOKEN
 CLIENT_ID=01234567890
@@ -113,4 +121,4 @@ node deploy-commands.js
 node index.js
   ```
   
-Notice: You only have to run *node deploy-commands.js* once, this command will create the commands. The index.js has the job to run the bot.
+🔔 Notice: You only have to run *node deploy-commands.js* once, this command will create the commands. The index.js has the job to run the bot.
