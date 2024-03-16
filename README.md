@@ -117,8 +117,6 @@ GUILD_ID=09876543210
   
 Now, run the commands:
    ```.js
-node deploy-commands.js
-node index.js
+npm start
   ```
   
-🔔 Notice: You only have to run *node deploy-commands.js* once, this command will create the commands. The index.js has the job to run the bot.
