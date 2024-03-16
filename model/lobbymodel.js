@@ -41,7 +41,7 @@ class Lobby {
   }
 
   async deleteLobby(rowid) {
-    await this.run('DELETE FROM lobby WHERE rowid = ? AND state in (1,2)', [winner, rowid]);
+    await this.run('DELETE FROM lobby WHERE rowid = ? AND state in (1)', [rowid]);
   }
 
 
