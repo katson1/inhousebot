@@ -124,10 +124,21 @@ CLIENT_ID=01234567890
 GUILD_ID=09355i2310
   ```
   
-Now, run the commands:
+Now, run the command:
    ```.js
 npm start
   ```
-  
+
+The bot is now running, go to your server and enjoy it!
+
+If you have any problems or improvements, you can contact me. 
+
+<a href="#" title="Gmail">
+<img src="https://img.shields.io/badge/-Gmail-FF0000?style=flat-square&labelColor=FF0000&logo=gmail&logoColor=white&link=mailto:katson.alves@ccc.ufcg.edu.br" alt="Gmail"/></a>
+<a href="#" title="LinkedIn">
+<img src="https://img.shields.io/badge/-Linkedin-0e76a8?style=flat-square&logo=Linkedin&logoColor=white&link=www.linkedin.com/in/katsonmatheus/" alt="LinkedIn"/></a>
+
+⭐ If you made it this far, consider giving this repository a star ⭐
+ 
 ## Author:
 - [Katson](https://github.com/katson1)
