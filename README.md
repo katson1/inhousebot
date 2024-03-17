@@ -72,6 +72,12 @@ An in-house bot that drafts 2 teams and has an MMR system was made for Heroes of
 </details>
 
 <details>
+  <summary> /allplayers </summary>
+  
+  - Shows all players who have been added to the inhouse.
+</details>
+
+<details>
   <summary> /help </summary>
   
   - Shows info of commands.
