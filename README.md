@@ -133,10 +133,10 @@ The bot is now running, go to your server and enjoy it!
 
 If you have any problems or improvements, you can contact me. 
 
-<a href="mailto:katson.alves@ccc.ufcg.edu.br" title="Gmail">
+<a href="#" title="Gmail">
 <img src="https://img.shields.io/badge/-Gmail-FF0000?style=flat-square&labelColor=FF0000&logo=gmail&logoColor=white&link=mailto:katson.alves@ccc.ufcg.edu.br" alt="Gmail"/></a>
-<a href="www.linkedin.com/in/katsonmatheus/" title="LinkedIn">
-<img src="https://img.shields.io/badge/-Linkedin-0e76a8?style=flat-square&logo=Linkedin&logoColor=white&link=www.linkedin.com/in/katsonmatheus/" alt="LinkedIn"/></a>
+<a href="#" title="LinkedIn">
+<img src="https://img.shields.io/badge/-Linkedin-0e76a8?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/katsonmatheus/" alt="LinkedIn"/></a>
 
 ⭐ If you made it this far, consider giving this repository a star ⭐
  
