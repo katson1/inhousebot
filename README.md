@@ -84,7 +84,7 @@ An in-house bot that drafts 2 teams and has an MMR system was made for Heroes of
 </details>
 
 ## 📦 How to use:
-You need to have node.js installed.
+You need to have [node.js](https://nodejs.org/en) installed.
 
 Clone the project.
 
