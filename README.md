@@ -80,7 +80,7 @@ An in-house bot that drafts 2 teams and has an MMR system was made for Heroes of
 ## 📦 How to use:
 You need to have node.js installed.
 
-Download the project.
+Clone the project.
 
 Install required packages into the project:
   ```bash
@@ -88,13 +88,13 @@ npm install
   ```
 First you need to created a bot in the [discord developer portal](https://discord.com/developers/applications).
 
-Copy the bot **TOKEN**.
+Copy the bot `TOKEN`.
 
 Add the bot to you server.
 
 Now create a **.env** file to the project.
 
-Add the **TOKEN** to the **.env** file:
+Add the bot `TOKEN` to the **.env** file:
 
   ```.env
 TOKEN=EXAMPLE01234TOKEN
@@ -102,7 +102,7 @@ CLIENT_ID=
 GUILD_ID=
   ```
  
-Now add the **CLIENT_ID** (you discord user id) and **GUILD_ID** (you server id) to the **.env** file.
+Now add the **CLIENT_ID** (your discord user's id) and **GUILD_ID** (your server's id) to the **.env** file.
 
 You can get the **CLIENT_ID** with a right click on you user profile on discord and clicking on **COPY ID**. 
 The *GUILD_ID* with a right click on you server on discord and clicking on **COPY ID**. 
