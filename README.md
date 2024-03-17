@@ -92,13 +92,16 @@ Install required packages into the project:
   ```bash
 npm install
   ```
-First you need to created a bot in the [discord developer portal](https://discord.com/developers/applications).
+First, you need to create a bot in the [discord developer portal](https://discord.com/developers/applications).
 
 Copy the bot `TOKEN`.
 
-Add the bot to you server.
+Add the bot to your server.
 
-Now create a **.env** file to the project.
+Now copy the .env.example file to **.env** file to the project:
+  ```.bash
+copy .env.example .env
+  ```
 
 Add the bot `TOKEN` to the **.env** file:
 
@@ -114,11 +117,11 @@ You can get the **CLIENT_ID** with a right click on you user profile on discord 
 The *GUILD_ID* with a right click on you server on discord and clicking on **COPY ID**. 
 If you are not seeing the **COPY ID** button, activate *development mode* with this steps: **discord configs -> advanced -> development mode**.
 
-The `.env` file will be like this example:
+The `.env` file should be like this example:
   ```.env
 TOKEN=EXAMPLE01234TOKEN
 CLIENT_ID=01234567890
-GUILD_ID=09876543210
+GUILD_ID=09355i2310
   ```
   
 Now, run the commands:
