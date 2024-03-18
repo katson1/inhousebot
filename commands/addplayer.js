@@ -46,7 +46,7 @@ export default {
 
 
         } else {
-            const data = await playersql.createPlayer(userTag, player, user);
+            await playersql.createPlayer(userTag, player, user);
             const exampleEmbed = getEmbed();
             exampleEmbed.title = `${user},`;
             exampleEmbed.fields.push(   
