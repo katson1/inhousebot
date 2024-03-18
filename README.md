@@ -92,35 +92,33 @@ Install required packages into the project:
   ```bash
 npm install
   ```
-First, you need to create a bot in the [discord developer portal](https://discord.com/developers/applications).
-
-Save the bot `TOKEN`.
-
-Add the bot to your server.
 
 Now copy the .env.example file to **.env** file to the project:
   ```.bash
 copy .env.example .env
   ```
 
-Add the bot `TOKEN` to the **.env** file:
+Now, you need to create a bot in the [discord developer portal](https://discord.com/developers/applications).
+Click on New Applcation and give it a cool name.
+On the **General Information** tab copy the APPLICATION ID and past on the CLIENT_ID variable on .env file, live this example: 
 
   ```.env
-TOKEN=EXAMPLE01234TOKEN
-CLIENT_ID=
+TOKEN=
+CLIENT_ID=0123456789876543210
   ```
- 
-Now add the **CLIENT_ID** to the **.env** file.
-You can get the **CLIENT_ID** in the [discord developer portal](https://discord.com/developers/applications).
-Go to: **Applications**, click on the bot you created before, on the **General Information** tab you have "APPLICATION ID" copy and paste on the `.env` file.
 
+Now, on the **Bot** tab click on Reset Token and generate a new `Token`. (Do not share this token!)
+Copy the `token` to the .env file:
 
 The `.env` file should be like this example:
   ```.env
 TOKEN=EXAMPLE01234TOKEN
-CLIENT_ID=01234567890
+CLIENT_ID=0123456789876543210
   ```
-  
+
+Then, go to OAuth2 tab and on the session OAuth2 URL Generator select `bot` and `applications.commands` then in the session "BOT PERMISSIONS" select `Administrator` checkbox. 
+This will generate the link to add the bot to a server. Paste it on a browser to add the bot to your server.
+
 Now, run the command:
    ```.js
 npm start
