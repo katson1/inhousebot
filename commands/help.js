@@ -1,86 +1,67 @@
-const {SlashCommandBuilder} = require("discord.js");
+import { SlashCommandBuilder } from "discord.js";
+import { getEmbed } from "../utils/embed.js";
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("help")
-        .setDescription("Ajuda sobre comandos!"),
+        .setDescription("Help about commands!"),
 
-    async execute(interaction){
-
-        exampleEmbed = getEmbed();
-        exampleEmbed.title = 'Comandos:';
-        exampleEmbed.fields.push(   
-        {
-            name: `/addplayer`,
-            value: `Adiciona um jogador à inhouse. Um jogador só pode entrar em um lobby se estiver adicionado. Um jogador começa com 50 pontos de MMR.`,
-            inline: false,
-        },
-        {
-            name: `/lobby`,
-            value: `Abre um lobby se não já existir um aberto.`,
-            inline: false,
-        },
-        {
-            name: `/join`,
-            value: `Entra em um lobby aberto.`,
-            inline: false,
-        },
-        {
-            name: `/leave`,
-            value: `Sai de um lobby entrado anteriormente, não é possível sair de um lobby em progresso (times já definidos)!`,
-            inline: false,
-        },
-        {
-            name: `/lobbyresult`,
-            value: `Fecha um lobby e define seu resultado, cada jogador do time vencedor ganha 5 pontos de MMR, perdedores perdem 5 pontos de MMR.`,
-            inline: false,
-        },
-        {
-            name: `/playerinfo`,
-            value: `Mostra informações sobre um jogador.`,
-            inline: false,
-        },
-        {
-            name: `/deletelobby`,
-            value: `Deleta um lobby aberto (jogadores entrando) ou em progresso (times definidos).`,
-            inline: false,
-        },
-        {
-            name: `/allplayers`,
-            value: `Mostra todos os usuários registrados na inhouse.`,
-            inline: false,
-        },
-        {
-            name: `/help`,
-            value: `Mostra a descrição dos comandos.`,
-            inline: false,
-        },
-        {
-            name: ``,
-            value: ``,
-            inline: false,
-        });
-        interaction.reply({ embeds: [exampleEmbed]});    
-
-
+    async execute(interaction) {
+        const exampleEmbed = getEmbed();
+        console.log(interaction.member.roles);
+        exampleEmbed.title = 'Commands:';
+        exampleEmbed.fields.push(
+            {
+                name: `/addplayer`,
+                value: `Adds a player to the inhouse. A player can only enter a lobby if they have been added. A player starts with 50 MMR points.`,
+                inline: false,
+            },
+            {
+                name: `/lobby`,
+                value: `Opens a lobby if one does not already exist.`,
+                inline: false,
+            },
+            {
+                name: `/join`,
+                value: `Joins an open lobby.`,
+                inline: false,
+            },
+            {
+                name: `/leave`,
+                value: `Leaves a previously joined lobby, it's not possible to leave a lobby in progress (teams already set)!`,
+                inline: false,
+            },
+            {
+                name: `/lobbyresult`,
+                value: `Closes a lobby and sets its result, each player on the winning team gains 5 MMR points, losers lose 5 MMR points.`,
+                inline: false,
+            },
+            {
+                name: `/playerinfo`,
+                value: `Shows information about a player.`,
+                inline: false,
+            },
+            {
+                name: `/deletelobby`,
+                value: `Deletes an open lobby (players joining) or in progress (teams set).`,
+                inline: false,
+            },
+            {
+                name: `/allplayers`,
+                value: `Shows all users registered in the inhouse.`,
+                inline: false,
+            },
+            {
+                name: `/help`,
+                value: `Shows the description of the commands.`,
+                inline: false,
+            },
+            {
+                name: ``,
+                value: ``,
+                inline: false,
+            }
+        );
+        await interaction.reply({ embeds: [exampleEmbed] });
     }
-}
-
-
-function getEmbed(){
-
-    embed = {
-        color: 0x000000,
-        title: '',
-        description: '',
-        fields: [
-        ],
-        footer: {
-            text: 'Developed by Katson',
-            icon_url: 'https://i.postimg.cc/W47Gr3Zq/DALL-E-2023-03-24-09-55-32.png',
-        },
-    };
-
-    return embed;
-}
-
+};

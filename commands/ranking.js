@@ -1,40 +1,42 @@
-const {SlashCommandBuilder} = require("discord.js");
-const Player = require('../model/playermodel');
+import { SlashCommandBuilder } from 'discord.js';
+import Player from '../model/playermodel.js';
+import { getEmbed } from '../utils/embed.js';
 
 const playersql = new Player('mydb.sqlite');
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("ranking")
-        .setDescription("Mostra ranking de jogadores!")
+        .setDescription("Shows player rankings!")
         .addStringOption(option =>
             option.setName('option')
-                .setDescription('Selecione uma opção.')
+                .setDescription('Select an option.')
                 .setRequired(true)
                 .addChoices(
                     { name: 'Top 10 MMR', value: 'top10' },
-                    { name: 'Bot 10 MMR', value: 'bot10' },
+                    { name: 'Bottom 10 MMR', value: 'bot10' },
                     { name: 'Top 10 Wins', value: 'win10' },
-                    { name: 'Top 10 Loses', value: 'lose10' })),
+                    { name: 'Top 10 Losses', value: 'lose10' })),
 
     async execute(interaction){
         const option = interaction.options.getString('option');
-        exampleEmbed = getEmbed();
+        let exampleEmbed = getEmbed();
+        let arrayplayers = [];
         switch (option) {
             case 'top10':
-                exampleEmbed.title = 'Top 10 jogadores por MMR:';
+                exampleEmbed.title = 'Top 10 players by MMR:';
                 arrayplayers = await playersql.getPlayerByTopMMR();
                 break;
             case 'bot10':
-                exampleEmbed.title = 'Bot 10 jogadores por MMR:';
+                exampleEmbed.title = 'Bottom 10 players by MMR:';
                 arrayplayers = await playersql.getPlayerByBotMMR();
                 break;
             case 'win10':
-                exampleEmbed.title = 'Top 10 jogadores por vitórias:';
+                exampleEmbed.title = 'Top 10 players by wins:';
                 arrayplayers = await playersql.getPlayerByTopWins();
                 break;
             case 'lose10':
-                exampleEmbed.title = 'Top 10 jogadores por derrotas:';
+                exampleEmbed.title = 'Top 10 players by losses:';
                 arrayplayers = await playersql.getPlayerByTopLoses();
                 break;
         }
@@ -42,11 +44,11 @@ module.exports = {
             arrayplayers.forEach((element, index) => {
               let valueText;
               if (option === 'win10') {
-                valueText = `${index} | **${element.win}** | **${element.name}**`;
+                valueText = `${index + 1} | **${element.win}** | **${element.name}**`;
               } else if (option === 'lose10') {
-                valueText = `${index} | **${element.lose}** | **${element.name}**`;
+                valueText = `${index + 1} | **${element.lose}** | **${element.name}**`;
               } else {
-                valueText = `${index} | **${element.mmr}** | **${element.name}**`;
+                valueText = `${index + 1} | **${element.mmr}** | **${element.name}**`;
               }
               exampleEmbed.fields.push({
                 name: '',
@@ -56,7 +58,7 @@ module.exports = {
             });
         } else {
             exampleEmbed.fields.push({
-              name: 'Não existe players cadastrados na inhouse!',
+              name: 'No players registered in the inhouse!',
               value: '',
               inline: false,
             });
@@ -64,21 +66,4 @@ module.exports = {
         interaction.reply({ embeds: [exampleEmbed]});
         
     }
-}
-
-function getEmbed(){
-
-    embed = {
-        color: 0x000000,
-        title: '',
-        description: '',
-        fields: [
-        ],
-        footer: {
-            text: 'Developed by Katson',
-            icon_url: 'https://i.postimg.cc/W47Gr3Zq/DALL-E-2023-03-24-09-55-32.png',
-        },
-    };
-
-    return embed;
 }

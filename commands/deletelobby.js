@@ -1,68 +1,50 @@
-const {SlashCommandBuilder} = require("discord.js");
-const Lobby = require('../model/lobbymodel');
-const Player = require('../model/playermodel');
+import { SlashCommandBuilder } from "discord.js";
+import Lobby from '../model/lobbymodel.js';
+import Player from '../model/playermodel.js';
+import { getEmbed } from "../utils/embed.js";
 
 const lobbysql = new Lobby('mydb.sqlite');
-const playersql = new Player('mydb.sqlite');
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
-        .setName("deletelobby")
-        .setDescription("Fechar lobby aberto ou em progresso!")
-        .addStringOption(option =>
-            option.setName('lobbynumber')
-                .setDescription('Adicione o número do lobby')
-                .setRequired(true)),
+    .setName("deletelobby")
+    .setDescription("Close an open or in-progress lobby!")
+    .addStringOption(option =>
+        option.setName('lobbynumber')
+            .setDescription('Add the lobby number')
+            .setRequired(true)),
 
-
-    async execute(interaction){
+        async execute(interaction) {
         
-        var replyEmbed = getEmbed();
+        const replyEmbed = getEmbed();
 
-        //ADICIONAR CHECAGEM SE JOGADOR TEM CARGO PARA ADICIONAR OUTRO PLAYER
+        // ADD CHECK IF PLAYER HAS ROLE TO ADD ANOTHER PLAYER
         //console.log(interaction.member.roles.cache.some(role => role.name === 'inhouse'));
 
         const lobbynumber = interaction.options.getString('lobbynumber');
         const user = interaction.user.username;
         
-        result = await lobbysql.getLobbyInProgressOrOpenned(lobbynumber);
+        const result = await lobbysql.getLobbyInProgressOrOpenned(lobbynumber);
 
         if (result.length > 0) {
             replyEmbed.title = 'Info:';
             replyEmbed.fields.push(   
             {
-                name: `O lobby (${lobbynumber}) foi deletado!`,
+                name: `The lobby (${lobbynumber}) has been deleted!`,
                 value: ``,
                 inline: false,
             },
             {
                 name: '\u200b',
-                value: `Deletado por: ${user}`,
+                value: `Deleted by: ${user}`,
                 inline: false,
             });
             interaction.reply({ embeds: [replyEmbed]});
             lobbysql.deleteLobby(lobbynumber);
 
         } else {
-            replyEmbed.title = `O lobby ${lobbynumber} não existe ou já foi fechado!`;
+            replyEmbed.title = `The lobby ${lobbynumber} does not exist or has already been closed!`;
             interaction.reply({ embeds: [replyEmbed]});
         }
     }
-}
-
-function getEmbed(){
-
-    embed = {
-        color: 0x000000,
-        title: '',
-        description: '',
-        fields: [
-        ],
-        footer: {
-            text: 'Developed by Katson',
-            icon_url: 'https://i.postimg.cc/W47Gr3Zq/DALL-E-2023-03-24-09-55-32.png',
-        },
-    };
-
-    return embed;
 }
