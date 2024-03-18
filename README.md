@@ -94,7 +94,7 @@ npm install
   ```
 First, you need to create a bot in the [discord developer portal](https://discord.com/developers/applications).
 
-Copy the bot `TOKEN`.
+Save the bot `TOKEN`.
 
 Add the bot to your server.
 
@@ -110,10 +110,10 @@ TOKEN=EXAMPLE01234TOKEN
 CLIENT_ID=
   ```
  
-Now add the **CLIENT_ID** (your discord user's id) to the **.env** file.
+Now add the **CLIENT_ID** to the **.env** file.
+You can get the **CLIENT_ID** in the [discord developer portal](https://discord.com/developers/applications).
+Go to: **Applications**, click on the bot you created before, on the **General Information** tab you have "APPLICATION ID" copy and paste on the `.env` file.
 
-You can get the **CLIENT_ID** with a right click on you user profile on discord and clicking on **COPY ID**. 
-If you are not seeing the **COPY ID** button, activate *development mode* with this steps: **discord configs -> advanced -> development mode**.
 
 The `.env` file should be like this example:
   ```.env
