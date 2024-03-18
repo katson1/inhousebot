@@ -108,20 +108,17 @@ Add the bot `TOKEN` to the **.env** file:
   ```.env
 TOKEN=EXAMPLE01234TOKEN
 CLIENT_ID=
-GUILD_ID=
   ```
  
-Now add the **CLIENT_ID** (your discord user's id) and **GUILD_ID** (your server's id) to the **.env** file.
+Now add the **CLIENT_ID** (your discord user's id) to the **.env** file.
 
 You can get the **CLIENT_ID** with a right click on you user profile on discord and clicking on **COPY ID**. 
-The *GUILD_ID* with a right click on you server on discord and clicking on **COPY ID**. 
 If you are not seeing the **COPY ID** button, activate *development mode* with this steps: **discord configs -> advanced -> development mode**.
 
 The `.env` file should be like this example:
   ```.env
 TOKEN=EXAMPLE01234TOKEN
 CLIENT_ID=01234567890
-GUILD_ID=09355i2310
   ```
   
 Now, run the command:

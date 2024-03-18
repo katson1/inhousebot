@@ -126,7 +126,7 @@ function getEmbed(type){
     return embed;
 }
 
-function createTable(){
+function createTable() {
 
     let db = new sqlite3.Database('mydb.sqlite', (err) => {
         if (err) {

@@ -46,6 +46,11 @@ module.exports = {
             inline: false,
         },
         {
+            name: `/allplayers`,
+            value: `Mostra todos os usuários registrados na inhouse.`,
+            inline: false,
+        },
+        {
             name: `/help`,
             value: `Mostra a descrição dos comandos.`,
             inline: false,
