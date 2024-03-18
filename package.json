@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.5",
+    "sqlite3": "^5.1.7"
+  },
+  "type": "module",
+  "name": "inhousebot-v2",
+  "description": "An in-house bot that drafts 2 teams and has an MMR system was made for any game that you play 5v5.",
+  "version": "2.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./deploy-commands.js && node ./index.js"
+  },
+  "keywords": [],
+  "author": "Katson Matheus (https://github.com/katson1)",
+  "license": "MIT"
+}

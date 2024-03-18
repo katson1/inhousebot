@@ -1,5 +1,5 @@
 # 🤖 InHouseBot
-An in-house bot that drafts 2 teams and has an MMR system was created for any game that you play 5v5.
+An in-house bot that drafts 2 teams and has an MMR system was made for any game that you play 5v5.
 
 ## ⌨️ Commands:
 
@@ -10,8 +10,6 @@ An in-house bot that drafts 2 teams and has an MMR system was created for any ga
   
     * options:
         - player - Select a user from discord server.
-        - role1 - Select a role, the bot will suggest: Healer, Tank, Assassin Flex, Assassin Ranged or Flex.
-        - role2 - Select another role.
      
 </details>
 <details>

@@ -1,32 +1,31 @@
-const {SlashCommandBuilder} = require("discord.js");
-const Lobby = require('../model/lobbymodel');
-const sqlite3 = require('sqlite3').verbose();
-
+import { SlashCommandBuilder } from 'discord.js';
+import Lobby from '../model/lobbymodel.js';
+import { createTableLobby } from '../database/db.js';
+import { getEmbed } from "../utils/embed.js";
 
 const lobbysql = new Lobby('mydb.sqlite');
 
-//createTable if dont exists
-createTable();
+// Create table if it doesn't exist
+createTableLobby();
 
-
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("lobby")
-        .setDescription("Criar um lobby!"),
+        .setDescription("Create a lobby!"),
 
     async execute(interaction){
-        //ADICIONAR CHECAGEM SE JOGADOR ESTÁ INCRITO NA INHOUSE
+        // ADD CHECK IF PLAYER IS SIGNED UP FOR INHOUSE
         //console.log(interaction.member.roles.cache.some(role => role.name === 'inhouse'));
 
         const result = await lobbysql.getLobbyOpenned();
 
         if (result.length > 0) {
-            exampleEmbed = getEmbed();
+            const exampleEmbed = getEmbed();
             exampleEmbed.title = 'Lobby:';
             exampleEmbed.fields.push(   
             {
-                name: `Existe um lobby em aberto à espera de jogadores.`,
-                value: `Digite /join para entrar no lobby!`,
+                name: `There is an open lobby waiting for players.`,
+                value: `Type /join to enter the lobby!`,
                 inline: false,
             },
             {
@@ -39,10 +38,10 @@ module.exports = {
         } else {
             lobbysql.createLobby();
 
-            exampleEmbed = getEmbed();
-            exampleEmbed.title = `Um lobby foi criado:`;
+            const exampleEmbed = getEmbed();
+            exampleEmbed.title = `A lobby has been created:`;
             exampleEmbed.fields.push({
-                name: `Jogadores, digite /join para entrar no lobby.`,
+                name: `Players, type /join to enter the lobby.`,
                 value: '',
                 inline: true,
             },
@@ -54,42 +53,4 @@ module.exports = {
             interaction.reply({ embeds: [exampleEmbed]});
         }
     }
-}
-
-
-function getEmbed(){
-
-    embed = {
-        color: 0x000000,
-        title: '',
-        description: '',
-        fields: [
-        ],
-        footer: {
-            text: 'Developed by Katson',
-            icon_url: 'https://i.postimg.cc/W47Gr3Zq/DALL-E-2023-03-24-09-55-32.png',
-        },
-    };
-
-    return embed;
-}
-
-// state will controll if a lobby 
-// is open(1), in_progress(2) or closed(3)
-function createTable(){
-
-    let db = new sqlite3.Database('mydb.sqlite', (err) => {
-        if (err) {
-          console.error(err.message);
-        }
-    });
-
-    db.run(`
-    CREATE TABLE IF NOT EXISTS lobby (
-        players json NOT NULL,
-        team1 json NOT NULL,
-        team2 json NOT NULL,
-        winner int,
-        state int
-    )`);
 }

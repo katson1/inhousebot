@@ -1,4 +1,4 @@
-const sqlite3 = require('sqlite3').verbose();
+import sqlite3 from 'sqlite3';
 
 class Player {
   constructor(databasePath) {
@@ -16,32 +16,32 @@ class Player {
   }
 
   async getPlayerByTopMMR() {
-    const rows = await this.query('SELECT * FROM player order by mmr desc limit 10');
+    const rows = await this.query('SELECT * FROM player ORDER BY mmr DESC LIMIT 10');
     return rows;
   }
 
   async getPlayerByBotMMR() {
-    const rows = await this.query('SELECT * FROM player order by mmr limit 10');
+    const rows = await this.query('SELECT * FROM player ORDER BY mmr LIMIT 10');
     return rows;
   }
 
   async getPlayerByTopWins() {
-    const rows = await this.query('SELECT * FROM player order by win limit 10');
+    const rows = await this.query('SELECT * FROM player ORDER BY win LIMIT 10');
     return rows;
   }
 
   async getPlayerByTopLoses() {
-    const rows = await this.query('SELECT * FROM player order by lose limit 10');
+    const rows = await this.query('SELECT * FROM player ORDER BY lose LIMIT 10');
     return rows;
   }
 
   async getPlayersListWithIn(stringWithoutBrackets, usertag) {
-    const rows = await this.query(`SELECT rowid, * FROM player WHERE usertag in (${stringWithoutBrackets},"${usertag}")`,[]);
+    const rows = await this.query(`SELECT rowid, * FROM player WHERE usertag IN (${stringWithoutBrackets},"${usertag}")`, []);
     return rows;
   }
-  
-  async createPlayer(usertag, name, role1, role2, addby) {
-    const result = await this.run('INSERT INTO player (usertag, name, mmr, role1, role2, addby, win, lose, games) VALUES (?,?,50,?,?,?,0,0,0)', [usertag, name, role1, role2, addby]);
+
+  async createPlayer(usertag, name, addby) {
+    const result = await this.run('INSERT INTO player (usertag, name, mmr, addby, win, lose, games) VALUES (?,?,50,?,0,0,0)', [usertag, name, addby]);
     return result.lastID;
   }
 
@@ -56,11 +56,11 @@ class Player {
   async updatePlayerGames(usertag) {
     await this.run('UPDATE player SET games = games + 1 WHERE usertag = ?', [usertag]);
   }
-  
+
   async updatePlayerMmrWin(usertag) {
     await this.run('UPDATE player SET mmr = mmr + 5 WHERE usertag = ?', [usertag]);
   }
-  
+
   async updatePlayerMmrLose(usertag) {
     await this.run('UPDATE player SET mmr = mmr - 5 WHERE usertag = ?', [usertag]);
   }
@@ -94,4 +94,4 @@ class Player {
   }
 }
 
-module.exports = Player;
+export default Player;

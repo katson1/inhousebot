@@ -1,15 +1,16 @@
-const {SlashCommandBuilder} = require("discord.js");
-const Player = require('../model/playermodel');
+import { SlashCommandBuilder } from 'discord.js';
+import Player from '../model/playermodel.js';
+import { getEmbed } from "../utils/embed.js";
 
 const playersql = new Player('mydb.sqlite');
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("playerinfo")
-        .setDescription("Mostra informações de um jogador!")
+        .setDescription("Shows a player's information!")
         .addUserOption(option =>
             option.setName('player')
-                .setDescription('Usertag do jogador')
+                .setDescription('Player usertag')
                 .setRequired(true)),
 
     async execute(interaction){
@@ -17,15 +18,15 @@ module.exports = {
         const tag = interaction.options.getUser('player').discriminator;
         const userTag = player+'#'+tag;
 
-        result = await playersql.getPlayerByUsertag(userTag);
+        const result = await playersql.getPlayerByUsertag(userTag);
                 
         if (result.length > 0) {
-            exampleEmbed = getEmbed();
-            exampleEmbed.title = `${userTag}:`;
+            const exampleEmbed = getEmbed();
+            exampleEmbed.title = `${player}:`;
             exampleEmbed.fields.push(   
             {
                 name: ``,
-                value: `MMR atual: ${result[0].mmr}`,
+                value: `Current MMR: ${result[0].mmr}`,
                 inline: false,
             },
             {
@@ -35,7 +36,7 @@ module.exports = {
             },
             {
                 name: '\u200b',
-                value: `Loses: ${result[0].lose}` ,
+                value: `Losses: ${result[0].lose}` ,
                 inline: false,
             },
             {
@@ -45,43 +46,26 @@ module.exports = {
             },
             {
                 name: '\u200b',
-                value: `Add by: ${result[0].addby}`,
+                value: `Added by: ${result[0].addby}`,
                 inline: false,
             });
             interaction.reply({ embeds: [exampleEmbed]});    
 
         } else {
-            exampleEmbed = getEmbed();
+            const exampleEmbed = getEmbed();
             exampleEmbed.fields.push(   
             {
-                name: `${userTag} não está inscrito na inhouse:`,
+                name: `${userTag} is not registered in the inhouse:`,
                 value: ``,
                 inline: false,
             },
             {
                 name: '\u200b',
-                value: `Você pode usar /addplayer para adicionar o jogador.`,
+                value: `You can use /addplayer to add the player.`,
                 inline: false,
             });
             interaction.reply({ embeds: [exampleEmbed]});
             
         }
     }
-}
-
-function getEmbed(){
-
-    embed = {
-        color: 0x000000,
-        title: '',
-        description: '',
-        fields: [
-        ],
-        footer: {
-            text: 'Developed by Katson',
-            icon_url: 'https://i.postimg.cc/W47Gr3Zq/DALL-E-2023-03-24-09-55-32.png',
-        },
-    };
-
-    return embed;
 }

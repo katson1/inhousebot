@@ -1,110 +1,94 @@
-const {SlashCommandBuilder} = require("discord.js");
-const Lobby = require('../model/lobbymodel');
-const Player = require('../model/playermodel');
+import { SlashCommandBuilder } from 'discord.js';
+import Lobby from '../model/lobbymodel.js';
+import Player from '../model/playermodel.js';
+import { getEmbed } from "../utils/embed.js";
 
 const lobbysql = new Lobby('mydb.sqlite');
 const playersql = new Player('mydb.sqlite');
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("lobbyresult")
-        .setDescription("Define o resultado do lobby!")
+        .setDescription("Sets the lobby result!")
         .addStringOption(option =>
             option.setName('lobbynumber')
-                .setDescription('Adicione o número do lobby')
+                .setDescription('Add the lobby number')
                 .setRequired(true))
         .addStringOption(option =>
             option.setName('winnerteam')
-                .setDescription('Time vencedor')
+                .setDescription('Winning team')
                 .setRequired(true)),
 
 
     async execute(interaction){
         
-        var replyEmbed = getEmbed();
+        const replyEmbed = getEmbed();
 
-        //ADICIONAR CHECAGEM SE JOGADOR TEM CARGO PARA ADICIONAR OUTRO PLAYER
+        //ADD CHECK IF PLAYER HAS ROLE TO ADD ANOTHER PLAYER
         //console.log(interaction.member.roles.cache.some(role => role.name === 'inhouse'));
 
         const lobbynumber = interaction.options.getString('lobbynumber');
         const winnerteam = interaction.options.getString('winnerteam');
         const user = interaction.user.username;
         
-        result = await lobbysql.getLobbyInProgress(lobbynumber);
+        const result = await lobbysql.getLobbyInProgress(lobbynumber);
 
         if (result.length > 0) {
             replyEmbed.title = 'Info:';
             replyEmbed.fields.push(   
             {
-                name: `O lobby (${lobbynumber}) foi fechado!`,
+                name: `The lobby (${lobbynumber}) has been closed!`,
                 value: ``,
                 inline: false,
             },
             {
                 name: '\u200b',
-                value: `Fechado por: ${user} - Time vencedor: ${winnerteam}`,
+                value: `Closed by: ${user} - Winning team: ${winnerteam}`,
                 inline: false,
             });
             interaction.reply({ embeds: [replyEmbed]});
-            lobbysql.updateStateToClosed(lobbynumber);
-            lobbysql.uptateWinner(winnerteam, lobbynumber);
-            updateMMRs(lobbynumber, winnerteam);
+            await lobbysql.updateStateToClosed(lobbynumber);
+            await lobbysql.updateWinner(winnerteam, lobbynumber);
+            await updateMMRs(lobbynumber, winnerteam);
 
         } else {
-            replyEmbed.title = `O lobby ${lobbynumber} não existe ou já foi fechado!`;
+            replyEmbed.title = `The lobby ${lobbynumber} does not exist or has already been closed!`;
             interaction.reply({ embeds: [replyEmbed]});
 
         }
     }
 }
 
-function getEmbed(){
-
-    embed = {
-        color: 0x000000,
-        title: '',
-        description: '',
-        fields: [
-        ],
-        footer: {
-            text: 'Developed by Katson',
-            icon_url: 'https://i.postimg.cc/W47Gr3Zq/DALL-E-2023-03-24-09-55-32.png',
-        },
-    };
-
-    return embed;
-}
-
 async function updateMMRs(lobbynumber, winnerteam){
-    let rowid = lobbynumber;
+    const rowid = lobbynumber;
     
     //lobbysql.updateStateToClosed(rowid);
 
-    result = await lobbysql.getLobbyByRowid(rowid);
+    const result = await lobbysql.getLobbyByRowid(rowid);
 
-    let team1 = result[0].team1;
-    let team1List = JSON.parse(team1);
-    let team2 = result[0].team2;
-    let team2List = JSON.parse(team2);
+    const team1 = result[0].team1;
+    const team1List = JSON.parse(team1);
+    const team2 = result[0].team2;
+    const team2List = JSON.parse(team2);
 
-    if(winnerteam == 2){
-        team1List.forEach(element => {
-            playersql.updatePlayerLoses(element);
-            playersql.updatePlayerMmrLose(element);
+    if(winnerteam == '2'){
+        team1List.forEach(async element => {
+            await playersql.updatePlayerLosses(element);
+            await playersql.updatePlayerMmrLoss(element);
         });
-        team2List.forEach(element => {
-            playersql.updatePlayerWins(element);
-            playersql.updatePlayerMmrWin(element);
+        team2List.forEach(async element => {
+            await playersql.updatePlayerWins(element);
+            await playersql.updatePlayerMmrWin(element);
         });
     }
-    if(winnerteam == 1){
-        team2List.forEach(element => {
-            playersql.updatePlayerLoses(element);
-            playersql.updatePlayerMmrLose(element);
+    if(winnerteam == '1'){
+        team2List.forEach(async element => {
+            await playersql.updatePlayerLosses(element);
+            await playersql.updatePlayerMmrLoss(element);
         });
-        team1List.forEach(element => {
-            playersql.updatePlayerWins(element);
-            playersql.updatePlayerMmrWin(element);
+        team1List.forEach(async element => {
+            await playersql.updatePlayerWins(element);
+            await playersql.updatePlayerMmrWin(element);
         });
     }
 
