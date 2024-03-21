@@ -78,7 +78,7 @@ An in-house bot that drafts 2 teams and has an MMR system was made for any game 
 <details>
   <summary> /help </summary>
   
-  - Shows info of commands.
+  - Shows commands info.
 </details>
 
 ## 📦 How to use:
