@@ -114,15 +114,18 @@ TOKEN=EXAMPLE01234TOKEN
 CLIENT_ID=0123456789876543210
   ```
 
-Then, go to OAuth2 tab and on the session OAuth2 URL Generator select `bot` and `applications.commands` then in the session "BOT PERMISSIONS" select `Administrator` checkbox. 
+**THIS IS A VERY IMPORTANT STEP:**
+
+On the 'OAuth2' tab, on the session 'OAuth2 URL Generator' select `bot` and `applications.commands` then in the session 'BOT PERMISSIONS' select `Administrator` checkbox. 
 This will generate the link to add the bot to a server. Paste it on a browser to add the bot to your server.
 
 Now, run the command:
-   ```.js
+   ```js
 npm start
   ```
 
 The bot is now running, go to your server and enjoy it!
+The bot can take up to 5 minutes to have the commands registered.
 
 If you have any problems or improvements, you can contact me:
 
