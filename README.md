@@ -116,7 +116,7 @@ CLIENT_ID=0123456789876543210
 
 **THIS IS A VERY IMPORTANT STEP:**
 
-On the 'OAuth2' tab, under the 'OAuth2 URL Generator' session, select bot and **applications.commands**. Then, in the 'BOT PERMISSIONS' section, check the **Administrator** checkbox. This will generate the link to add the bot to a server. Simply paste the generated link into your browser to add the bot to your server.
+On the 'OAuth2' tab, under the 'OAuth2 URL Generator' session, select **bot** and **applications.commands**. Then, in the 'BOT PERMISSIONS' section, check the **Administrator** checkbox. This will generate the link to add the bot to a server. Simply paste the generated link into your browser to add the bot to your server.
 
 Now, run the command:
    ```js
