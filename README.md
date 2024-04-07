@@ -97,7 +97,7 @@ copy .env.example .env
   ```
 
 Now, you need to create a bot in the [discord developer portal](https://discord.com/developers/applications).
-Click on New Applcation and give it a cool name.
+Click on New Application and give it a cool name.
 On the **General Information** tab copy the APPLICATION ID and past on the CLIENT_ID variable on .env file, live this example: 
 
   ```.env
