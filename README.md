@@ -123,9 +123,11 @@ Now, run the command:
 npm start
   ```
 
-Once it's running, you can add the bot to multiple servers, and it will work seamlessly on all of them.
+
 The bot is now up and running! Head over to your server and enjoy it!
 The bot may take up to 5 minutes to register the commands.
+
+> Once it's running, you can add the bot to multiple servers, and it will work seamlessly on all of them.
 
 If you encounter any issues or have suggestions for improvements, feel free to contact me at any time:
 
