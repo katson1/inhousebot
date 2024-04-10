@@ -131,7 +131,7 @@ Notice: The bot may take up to 5 minutes to register the commands.
 
 > Once it's running, you can add the bot to multiple servers, and it will work seamlessly on all of them.
 
-If you encounter any issues or have suggestions for improvements, feel free to contact me at any time:
+If you encounter any issues or have improvements suggestions, feel free to contact me at any time:
 
 [<img src="https://img.shields.io/badge/-Gmail-FF0000?style=flat-square&labelColor=FF0000&logo=gmail&logoColor=white&link=" alt="Gmail"/></a>](mailto:katson.alves@ccc.ufcg.edu.br)
 [<img src="https://img.shields.io/badge/-Linkedin-0e76a8?style=flat-square&logo=Linkedin&logoColor=white&link=" alt="LinkedIn"/></a>](https://www.linkedin.com/in/katsonmatheus/)
