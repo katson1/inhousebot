@@ -1,5 +1,5 @@
 # 🤖 InHouseBot
-An in-house bot that drafts 2 teams and has a MMR system was made for any game that you play 5v5.
+An in-house Discord bot that drafts 2 teams and has a MMR system was made for any game that you play 5v5.
 
 ## ⌨️ Commands:
 
