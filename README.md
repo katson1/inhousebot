@@ -129,7 +129,7 @@ The bot is now up and running! Head over to your server and enjoy it!
 
 Notice: The bot may take up to 5 minutes to register the commands.
 
-> Once it's running, you can add the bot to multiple servers, and it will work seamlessly on all of them.
+> ⚠️ This bot cannot operate on multiple servers simultaneously within the same project.
 
 If you encounter any issues or have improvements suggestions, feel free to contact me at any time:
 
