@@ -133,10 +133,10 @@ Notice: The bot may take up to 5 minutes to register the commands.
 
 If you encounter any issues or have improvements suggestions, feel free to contact me at any time:
 
-[<img src="https://img.shields.io/badge/-Gmail-FF0000?style=flat-square&labelColor=FF0000&logo=gmail&logoColor=white&link=" alt="Gmail"/></a>](mailto:katson.alves@ccc.ufcg.edu.br)
-[<img src="https://img.shields.io/badge/-Linkedin-0e76a8?style=flat-square&logo=Linkedin&logoColor=white&link=" alt="LinkedIn"/></a>](https://www.linkedin.com/in/katsonmatheus/)
-
-⭐ If you've made it this far, please consider giving this repository a star! ⭐
+[![github](https://skillicons.dev/icons?i=github)](https://github.com/katson1)
+[![discord](https://skillicons.dev/icons?i=discord)](https://discordapp.com/users/210789016675549184)
+[![linkedin](https://skillicons.dev/icons?i=linkedin)](https://www.linkedin.com/in/katsonmatheus/)
+[![gmail](https://skillicons.dev/icons?i=gmail)](mailto:katson.alves@ccc.ufcg.edu.br)
  
 ## Author:
 - [Katson](https://github.com/katson1)
