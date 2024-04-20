@@ -129,7 +129,7 @@ The bot is now up and running! Head over to your server and enjoy it!
 
 Notice: The bot may take up to 5 minutes to register the commands.
 
-> ⚠️ This bot cannot operate on multiple servers simultaneously within the same project.
+> ⚠️ This bot cannot operate on multiple servers simultaneously within the same project, because the database only works in one server.
 
 If you encounter any issues or have improvements suggestions, feel free to contact me at any time:
 
