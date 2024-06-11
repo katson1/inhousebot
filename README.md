@@ -82,7 +82,7 @@ An in-house Discord bot that drafts 2 teams and has a MMR system was made for an
 </details>
 
 ## 📦 How to use:
-You need to have [node.js](https://nodejs.org/en) installed.
+You need to have [node.js](https://nodejs.org/en) installed and a [Discord](https://discord.com/) account.
 
 Clone the project.
 
