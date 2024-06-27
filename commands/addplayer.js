@@ -15,7 +15,7 @@ export default {
     .setDescription("Add a player!")
     .addUserOption(option =>
         option.setName('player')
-            .setDescription('Add the player’s name')
+            .setDescription('Add the player')
             .setRequired(true)),
 
         async execute(interaction) {

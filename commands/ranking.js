@@ -18,7 +18,7 @@ export default {
                     { name: 'Top 10 Wins', value: 'win10' },
                     { name: 'Top 10 Losses', value: 'lose10' })),
 
-    async execute(interaction){
+    async execute(interaction) {
         const option = interaction.options.getString('option');
         let exampleEmbed = getEmbed();
         let arrayplayers = [];
